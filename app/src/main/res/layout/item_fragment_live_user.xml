@@ -9,24 +9,25 @@
     app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="4dp"
     app:cardElevation="5dp"
-    app:cardMaxElevation="10dp"
+    app:cardMaxElevation="1dp"
     app:cardPreventCornerOverlap="true"
     app:cardUseCompatPadding="true">
 
     <com.zhy.autolayout.AutoRelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <TextView
             android:id="@+id/tv_live_status"
             android:layout_width="160px"
-            android:layout_alignParentTop="true"
+            android:layout_height="60px"
             android:layout_alignParentRight="true"
-            android:background="@drawable/live_status_backgroud"
-            android:text="在直播"
+            android:layout_alignParentTop="true"
             android:layout_marginTop="20px"
+            android:background="@drawable/live_status_backgroud"
             android:gravity="center"
-            android:textSize="40px"
-            android:layout_height="60px" />
+            android:text="在直播"
+            android:textSize="40px" />
 
         <pub.kanzhibo.app.common.widget.RoundImageView
             android:id="@+id/roundimage_roombackgroud"
@@ -34,48 +35,52 @@
             android:layout_height="200px"
             android:layout_centerVertical="true"
             android:layout_marginLeft="40px"
-            app:type="round"
-            android:background="@mipmap/room_backgroud_default"/>
+            android:background="@mipmap/room_backgroud_default"
+            app:type="round" />
 
         <TextView
             android:id="@+id/tv_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/roundimage_roombackgroud"
-            android:text="TH000"
+            android:layout_alignTop="@id/roundimage_roombackgroud"
             android:layout_marginLeft="32px"
             android:layout_marginTop="32px"
-            android:layout_alignTop="@id/roundimage_roombackgroud"
+            android:layout_toRightOf="@id/roundimage_roombackgroud"
+            android:text="TH000"
+            android:textAppearance="?attr/textAppearanceListItem" />
+
+        <TextView
+            android:id="@+id/tv_viewercount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_username"
+            android:layout_marginLeft="32px"
+            android:layout_marginTop="16px"
+            android:layout_toRightOf="@id/roundimage_roombackgroud"
+            android:text="7.6万人"
             android:textAppearance="?attr/textAppearanceListItem" />
 
         <TextView
             android:id="@+id/tv_roomtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_username"
-            android:layout_margin="32px"
+            android:layout_below="@id/tv_viewercount"
+            android:layout_marginLeft="32px"
+            android:layout_marginTop="16px"
             android:layout_toRightOf="@id/roundimage_roombackgroud"
             android:text="直播黄金联赛"
             android:textAppearance="?attr/textAppearanceListItem" />
-        <TextView
-            android:id="@+id/tv_viewercount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@id/roundimage_roombackgroud"
-            android:layout_margin="32px"
-            android:layout_toRightOf="@id/tv_roomtitle"
-            android:text="7.6万人"
-            android:textAppearance="?attr/textAppearanceListItem" />
+
         <com.zcw.togglebutton.ToggleButton
             android:layout_width="180px"
             android:layout_height="90px"
-            toggle:tbBorderWidth="2dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="40px"
+            toggle:tbBorderWidth="2dp"
             toggle:tbOffBorderColor="#000"
             toggle:tbOffColor="#ddd"
             toggle:tbOnColor="#f00"
-            toggle:tbSpotColor="#00f"></com.zcw.togglebutton.ToggleButton>
+            toggle:tbSpotColor="#00f" />
     </com.zhy.autolayout.AutoRelativeLayout>
 </android.support.v7.widget.CardView>

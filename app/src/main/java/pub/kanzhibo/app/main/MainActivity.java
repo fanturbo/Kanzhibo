@@ -1,15 +1,18 @@
 package pub.kanzhibo.app.main;
 
+import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
+import android.util.TypedValue;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,15 +22,15 @@ import pub.kanzhibo.app.R;
 import pub.kanzhibo.app.base.BaseActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
+import pub.kanzhibo.app.search.SearchActivity;
 
 public class MainActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener{
 
     @BindView(R.id.toolbar)
-    Toolbar toolbar;
+    Toolbar mToolBar;
     @BindView(R.id.fab)
-    FloatingActionButton fab;
+    FloatingActionButton mFloatingActionButton;
     @BindView(R.id.drawer_layout)
     DrawerLayout drawer;
     @BindView(R.id.nav_view)
@@ -40,12 +43,13 @@ public class MainActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(mToolBar);
+        initToolbar();
         initView();
     }
 
     private void initView() {
-        fab.setOnClickListener(new View.OnClickListener() {
+        mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -54,12 +58,12 @@ public class MainActivity extends BaseActivity
         });
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, mToolBar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.frame_main_content,new LiveUserFragment());
+        fragmentTransaction.replace(R.id.frame_main_content, new LiveUserFragment());
         fragmentTransaction.commit();
     }
 
@@ -75,7 +79,7 @@ public class MainActivity extends BaseActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -83,11 +87,14 @@ public class MainActivity extends BaseActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_search) {
+            startActivity(new Intent(this, SearchActivity.class));
         }
-
         return super.onOptionsItemSelected(item);
+    }
+
+    private void initToolbar() {
+        mToolBar.inflateMenu(R.menu.menu_main);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

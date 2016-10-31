@@ -87,7 +87,7 @@ dependencies {
     //简化Adapter书写并且提供了各种事件处理
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:v1.9.7'
     compile 'com.zcw:togglebutton-library:1.0.0'
-    compile 'com.github.castorflex.smoothprogressbar:library-circular:1.1.0'
+    compile 'com.sdsmdg.tastytoast:tastytoast:0.1.0'
     //saving and restoring activity or fragment instance state
     // compile "frankiesardo:icepick:3.2.0"
     // compile "frankiesardo:icepick-processor:3.2.0"

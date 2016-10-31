@@ -1,8 +1,15 @@
 <resources>
-    <string name="app_name">Kanzhibo</string>
+    <string name="app_name">看直播</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <array name="platform">
+        <item>斗鱼</item>
+        <item>熊猫</item>
+        <item>战旗</item>
+        <item>虎牙</item>
+        <item>全民</item>
+    </array>
 </resources>

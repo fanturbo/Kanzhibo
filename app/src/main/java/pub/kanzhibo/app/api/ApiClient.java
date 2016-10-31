@@ -1,16 +1,8 @@
 package pub.kanzhibo.app.api;
 
-import android.text.TextUtils;
-
-import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import pub.kanzhibo.app.BuildConfig;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -23,7 +15,7 @@ public class ApiClient {
 
     private static Retrofit retrofit;
 
-    private static IDouyuLiveApi mDouyuApi;
+    private static ILiveApi mDouyuApi;
 
     private static ApiClient apiClient;
 
@@ -34,9 +26,9 @@ public class ApiClient {
         return apiClient;
     }
 
-    public IDouyuLiveApi getDouyuApi(String baseUrl) {
-//        return mDouyuApi == null ? configRetrofit(IDouyuLiveApi.class) : mDouyuApi;
-        return configRetrofit(IDouyuLiveApi.class,baseUrl);
+    public ILiveApi getHuyaData(String baseUrl) {
+//        return mDouyuApi == null ? configRetrofit(ILiveApi.class) : mDouyuApi;
+        return configRetrofit(ILiveApi.class,baseUrl);
     }
 
 

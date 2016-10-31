@@ -1,4 +1,4 @@
-package pub.kanzhibo.app.main;
+package pub.kanzhibo.app.search;
 
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 
@@ -9,6 +9,6 @@ import pub.kanzhibo.app.model.liveuser.LiveUser;
 /**
  * Created by snail on 16/10/30.
  */
-public interface LiveView extends MvpLceView<List<LiveUser>> {
+public interface SearchView extends MvpLceView<List<LiveUser>> {
     void stopRefresh();
 }
