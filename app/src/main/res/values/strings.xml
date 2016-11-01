@@ -5,6 +5,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="search_hint_text">请输入主播名称或者房间号</string>
     <array name="platform">
         <item>斗鱼</item>
         <item>熊猫</item>

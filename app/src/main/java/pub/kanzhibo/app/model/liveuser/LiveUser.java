@@ -1,10 +1,13 @@
 package pub.kanzhibo.app.model.liveuser;
 
+import pub.kanzhibo.app.model.PlatForm;
+
 /**
  * Created by turbo on 2016/10/28.
  */
 
 public class LiveUser {
+    PlatForm platform;
     //主播用户名
     String userName;
     //直播间名称
@@ -74,5 +77,13 @@ public class LiveUser {
 
     public void setRoomBackgroudUrl(String roomBackgroudUrl) {
         this.roomBackgroudUrl = roomBackgroudUrl;
+    }
+
+    public PlatForm getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(PlatForm platform) {
+        this.platform = platform;
     }
 }

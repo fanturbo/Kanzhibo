@@ -55,7 +55,6 @@ public class LivePresent extends BaseRxLcePresenter<LiveView, List<LiveUser>> {
 
     void getHuyaLiveUser(final boolean pullToRefresh) {
         getView().showLoading(pullToRefresh);
-        //todo 3s后再执行请求操作
         //todo 查询本地数据库查找关注的直播（后续看情况是否保存到服务器,毕竟需求不大，哈哈）
     }
 }

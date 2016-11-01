@@ -24,8 +24,11 @@
             android:layout_width="0dp"
             android:layout_height="132px"
             android:layout_weight="1"
-            android:hint="请输入主播名称进行搜索"
-            android:textColor="@color/base_color" />
+            android:singleLine="true"
+            android:drawableRight="@mipmap/ic_close_actioncard"
+            android:hint="@string/search_hint_text"
+            android:textColor="@color/base_color"
+            android:textSize="36px" />
 
         <ImageButton
             android:id="@+id/ib_search"

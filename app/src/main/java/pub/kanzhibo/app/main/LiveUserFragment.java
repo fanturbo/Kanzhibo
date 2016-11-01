@@ -22,7 +22,7 @@ import pub.kanzhibo.app.model.liveuser.LiveUser;
 import java.util.List;
 
 /**
- * 主播列表Fragment
+ * 关注的主播列表Fragment
  */
 public class LiveUserFragment extends BaseLceFragment<SwipeRefreshLayout, List<LiveUser>, LiveView, LivePresent>
         implements LiveView, SwipeRefreshLayout.OnRefreshListener {

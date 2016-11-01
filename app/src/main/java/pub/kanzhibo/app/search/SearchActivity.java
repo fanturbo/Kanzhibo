@@ -7,6 +7,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -16,10 +18,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import butterknife.BindArray;
 import butterknife.BindView;
 import butterknife.OnClick;
 import pub.kanzhibo.app.R;
 import pub.kanzhibo.app.base.BaseActivity;
+import pub.kanzhibo.app.model.PlatForm;
 import pub.kanzhibo.app.model.event.SearchEvent;
 
 public class SearchActivity extends BaseActivity {
@@ -28,20 +32,32 @@ public class SearchActivity extends BaseActivity {
     ViewPager viewPager;
     @BindView(R.id.tabLayout)
     TabLayout tabLayout;
-//    @BindView(R.id.ib_back)
-//    ImageButton backButton;
-//    @BindView(R.id.ib_search)
-//    ImageButton searchButton;
     @BindView(R.id.et_search_key)
     EditText searchKeyEditText;
+    String[] mPlatForms;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        viewPager.setAdapter(new SearchFragmentStatePagerAdapter(getSupportFragmentManager(), Arrays.asList(getResources().getStringArray(R.array.platform))));
+        mPlatForms = getResources().getStringArray(R.array.platform);
+        viewPager.setAdapter(new SearchFragmentStatePagerAdapter(getSupportFragmentManager(), Arrays.asList(mPlatForms)));
+        viewPager.setOffscreenPageLimit(5);
         tabLayout.setupWithViewPager(viewPager);
+        //给editText内部的drawable添加点击事件
+        searchKeyEditText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if(event.getRawX() >= searchKeyEditText.getRight() - searchKeyEditText.getTotalPaddingRight()){
+                        searchKeyEditText.setText("");
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
     }
 
     @OnClick(R.id.ib_back)
@@ -51,8 +67,9 @@ public class SearchActivity extends BaseActivity {
 
     @OnClick(R.id.ib_search)
     void search() {
-        RxBus.get().post(new SearchEvent( searchKeyEditText.getText().toString().trim()));
+        RxBus.get().post(new SearchEvent(searchKeyEditText.getText().toString().trim()));
     }
+
     //todo fragment的缓存
     class SearchFragmentStatePagerAdapter extends FragmentStatePagerAdapter {
 
@@ -65,7 +82,31 @@ public class SearchActivity extends BaseActivity {
 
         @Override
         public Fragment getItem(int position) {
-            return new SearchUserFragment();
+            SearchUserFragment searchUserFragment = new SearchUserFragment();
+            Bundle bundle = new Bundle();
+            switch (titles.get(position)) {
+                case "熊猫":
+                    bundle.putSerializable("platform", PlatForm.PANDA);
+                    searchUserFragment.setArguments(bundle);
+                    return searchUserFragment;
+                case "虎牙":
+                    bundle.putSerializable("platform", PlatForm.HUYA);
+                    searchUserFragment.setArguments(bundle);
+                    return searchUserFragment;
+                case "战旗":
+                    bundle.putSerializable("platform", PlatForm.ZHANQI);
+                    searchUserFragment.setArguments(bundle);
+                    return searchUserFragment;
+                case "全民":
+                    bundle.putSerializable("platform", PlatForm.QUANMIN);
+                    searchUserFragment.setArguments(bundle);
+                    return searchUserFragment;
+                default:
+                    bundle.putSerializable("platform", PlatForm.DOUYU);
+                    searchUserFragment.setArguments(bundle);
+                    return searchUserFragment;
+            }
+
         }
 
         @Override

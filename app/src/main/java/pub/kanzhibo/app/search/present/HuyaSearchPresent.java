@@ -1,4 +1,4 @@
-package pub.kanzhibo.app.search;
+package pub.kanzhibo.app.search.present;
 
 import com.google.gson.Gson;
 
@@ -13,51 +13,31 @@ import java.util.List;
 import okhttp3.ResponseBody;
 import pub.kanzhibo.app.api.ApiClient;
 import pub.kanzhibo.app.api.RxSchedulers;
-import pub.kanzhibo.app.base.BaseRxLcePresenter;
+import pub.kanzhibo.app.base.BaseSearchPresent;
 import pub.kanzhibo.app.gloabal.Constants;
 import pub.kanzhibo.app.model.liveuser.LiveUser;
 import pub.kanzhibo.app.model.liveuser.UserHuyaLive;
 import pub.kanzhibo.app.model.liveuser.UserHuyaPlay;
-import rx.Subscriber;
+import rx.Subscription;
 import rx.functions.Func1;
 
 /**
  * Created by snail on 16/10/30.
  */
-public class SearchPresent extends BaseRxLcePresenter<SearchView, List<LiveUser>> {
+public class HuyaSearchPresent extends BaseSearchPresent {
 
-    private Subscriber<List<LiveUser>> subscriber = new Subscriber<List<LiveUser>>() {
-        @Override
-        public void onCompleted() {
-
-        }
-
-        @Override
-        public void onError(Throwable e) {
-            getView().showError(e, false);
-        }
-
-        @Override
-        public void onNext(List<LiveUser> liveUsers) {
-            if (isViewAttached()) {
-                getView().setData(liveUsers);
-                getView().showContent();
-                getView().stopRefresh();
-            }
-        }
-    };
-    ;
-
-    void searchUser(final boolean pullToRefresh, String searchKey, int page) {
-        getView().showLoading(pullToRefresh);
-        //todo 3s后再执行请求操作
-        ApiClient.getInstance().getHuyaData(Constants.HUYA_BASE_URL).searchHuya(searchKey, page)
+    @Override
+    public void searchUser(final boolean pullToRefresh, String searchKey, int page) {
+        preRequest(pullToRefresh);
+        //todo 抓下虎牙的加载更多数据app内是如何请求的
+        subscription = ApiClient.getInstance().getLiveApi(Constants.HUYA_BASE_URL).searchHuya(searchKey, (page + 1) * 10)
                 .map(new Func1<ResponseBody, List<LiveUser>>() {
                     @Override
                     public List<LiveUser> call(ResponseBody responseBody) {
                         List<LiveUser> result = null;
                         String responseJsonStr = null;
                         try {
+                            //todo 虎牙的数据有点懵逼，所以使用原生的json解析方式 我猜应该还有比较智能的解析方式
                             responseJsonStr = new String(responseBody.bytes());
                             JSONObject latestNewsJSON = new JSONObject(responseJsonStr);
                             JSONArray responsePlay = latestNewsJSON.getJSONObject("response").getJSONObject("1").getJSONArray("docs");
@@ -104,6 +84,6 @@ public class SearchPresent extends BaseRxLcePresenter<SearchView, List<LiveUser>
                     }
                 })
                 .compose(RxSchedulers.<List<LiveUser>>applySchedulers())
-                .subscribe(subscriber);
+                .subscribe(getSubscriber());
     }
 }

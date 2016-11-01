@@ -3,8 +3,12 @@ package pub.kanzhibo.app.api;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import pub.kanzhibo.app.model.liveuser.LiveUserDouYu;
+import pub.kanzhibo.app.model.liveuser.LiveUserPanda;
+import pub.kanzhibo.app.model.liveuser.LiveUserQuanmin;
+import pub.kanzhibo.app.model.liveuser.LiveUserZhanqi;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
@@ -13,6 +17,8 @@ import rx.Observable;
  * Created by snail on 16/10/30.
  */
 public interface ILiveApi {
+    //注：所有的搜索都限制为20条，这是写死的，所以如果使用接口的话请注意这一点
+
     /**
      * 虎牙
      *
@@ -31,36 +37,48 @@ public interface ILiveApi {
      * @return
      */
     @GET("/api/touch/search?t=anchor&nums=236&ver=2.6.6&os=3")
-    Observable<ResponseBody> searchZhanqi(@Query("q") String searchKey, @Query("page") int rows);
+    Observable<LiveUserZhanqi> searchZhanqi(@Query("q") String searchKey, @Query("page") int rows);
 
     /**
      * 斗鱼
      *
      * @param searchKey
-     * @param limit
-     * @param offset
+     * @param offset    0,10,20
      * @return
      */
-    @GET("/api/v1/searchNew/{search_string}/1")
-    Observable<ResponseBody> searchDouyu(@Path("search_string") String searchKey, @Query("limit") int limit, @Query("offset") int offset);
+    @GET("/api/v1/searchNew/{search_string}/1?limit=20")
+    Observable<LiveUserDouYu> searchDouyu(@Path("search_string") String searchKey, @Query("offset") int offset);
 
     /**
      * 全民
+     *
      * @param requestBody
      * @return
      */
-    @GET("/site/search")
-    Observable<ResponseBody> searchQuanmin(@Body RequestBody requestBody);
+    @POST("/site/search")
+    Observable<LiveUserQuanmin> searchQuanmin(@Body RequestBody requestBody);
 
     /**
      * 熊猫
      *
      * @param searchKey
-     * @param pageno
-     * @param pagenum
-     * @param status
+     * @param pageno    //     * @param status    在线状态 2在线 3不在线
      * @return
      */
-    @GET("http://api.m.panda.tv/ajax_search?__version=2.0.2.1493&__plat=android&__channel=xiaomi")
-    Observable<ResponseBody> searchPanda(@Query("keyword") String searchKey, @Query("pageno") int pageno, @Query("pagenum") int pagenum, @Query("status") int status);
+//    手机端的接口，因为熊猫tv的app是根据是否在线用两个tab分别来展示的，所以需要传个status字段
+//    @GET("/ajax_search?__version=2.0.2.1493&__plat=android&__channel=xiaomi&pagenum=20")
+//    Observable<LiveUserPanda> searchPanda(@Query("keyword") String searchKey, @Query("pageno") int pageno, @Query("status") int status);
+    //这儿是pc端的接口
+    @GET("/ajax_search?order_cond=fans&pagenum=20")
+    Observable<LiveUserPanda> searchPanda(@Query("name") String searchKey, @Query("pageno") int pageno);
+
+    /**
+     * 获取熊猫tv直播房间信息
+     *
+     * @param roomid
+     * @return
+     */
+    @GET("/api_room_v2?roomid=497942")
+    Observable<LiveUserPanda> getPandaRoomInfo(@Query("roomid") String roomid);
+
 }

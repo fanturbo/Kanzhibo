@@ -15,7 +15,7 @@ public class ApiClient {
 
     private static Retrofit retrofit;
 
-    private static ILiveApi mDouyuApi;
+    private static ILiveApi mLiveApi;
 
     private static ApiClient apiClient;
 
@@ -26,8 +26,8 @@ public class ApiClient {
         return apiClient;
     }
 
-    public ILiveApi getHuyaData(String baseUrl) {
-//        return mDouyuApi == null ? configRetrofit(ILiveApi.class) : mDouyuApi;
+    public ILiveApi getLiveApi(String baseUrl) {
+//        return mLiveApi == null ? configRetrofit(ILiveApi.class) : mLiveApi;
         return configRetrofit(ILiveApi.class,baseUrl);
     }
 
