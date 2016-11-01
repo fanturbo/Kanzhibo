@@ -71,13 +71,14 @@
             android:text="直播黄金联赛"
             android:textAppearance="?attr/textAppearanceListItem" />
 
-        <com.zcw.togglebutton.ToggleButton
+        <pub.kanzhibo.app.common.widget.ToggleButton
+            android:id="@+id/togglebutton_focus"
             android:layout_width="180px"
             android:layout_height="90px"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="40px"
-            toggle:tbBorderWidth="2dp"
+            toggle:tbBorderWidth="2dptogglebutton_focus"
             toggle:tbOffBorderColor="#000"
             toggle:tbOffColor="#ddd"
             toggle:tbOnColor="#f00"

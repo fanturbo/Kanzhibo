@@ -71,6 +71,7 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.1.0'
     compile 'io.reactivex:rxjava:1.1.0'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+    compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
     //屏幕适配
     compile 'com.zhy:autolayout:1.4.3'
     //沉浸式标题栏
@@ -85,8 +86,7 @@ dependencies {
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     //简化Adapter书写并且提供了各种事件处理
-    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:v1.9.7'
-    compile 'com.zcw:togglebutton-library:1.0.0'
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:v2.4.4'
     compile 'com.sdsmdg.tastytoast:tastytoast:0.1.0'
     //saving and restoring activity or fragment instance state
     // compile "frankiesardo:icepick:3.2.0"

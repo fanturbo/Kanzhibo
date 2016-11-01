@@ -7,6 +7,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemChildClickListener;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.hwangjr.rxbus.RxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.zhy.autolayout.AutoRelativeLayout;
@@ -54,6 +57,13 @@ public class SearchUserFragment extends BaseLceFragment<SwipeRefreshLayout, List
         super.onViewCreated(view, savedInstanceState);
         RxBus.get().register(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.addOnItemTouchListener(new OnItemClickListener() {
+
+            @Override
+            public void SimpleOnItemClick(BaseQuickAdapter adapter, View view, int position) {
+                //todo 使用webview播放视频
+            }
+        });
         contentView.setOnRefreshListener(this);
         loadData(false);
     }
