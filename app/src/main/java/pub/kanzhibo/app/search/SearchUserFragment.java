@@ -1,5 +1,7 @@
 package pub.kanzhibo.app.search;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -14,12 +16,16 @@ import com.hwangjr.rxbus.RxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.zhy.autolayout.AutoRelativeLayout;
 
+import java.net.UnknownHostException;
 import java.util.List;
 
 import butterknife.BindView;
+import pub.kanzhibo.app.App;
 import pub.kanzhibo.app.R;
 import pub.kanzhibo.app.base.BaseLceFragment;
 import pub.kanzhibo.app.base.BaseSearchPresent;
+import pub.kanzhibo.app.common.CommonActivity;
+import pub.kanzhibo.app.common.widget.ToggleButton;
 import pub.kanzhibo.app.main.LiveUserAdapter;
 import pub.kanzhibo.app.model.PlatForm;
 import pub.kanzhibo.app.model.event.SearchEvent;
@@ -29,12 +35,18 @@ import pub.kanzhibo.app.search.present.HuyaSearchPresent;
 import pub.kanzhibo.app.search.present.PandaSearchPresent;
 import pub.kanzhibo.app.search.present.QuanminSearchPresent;
 import pub.kanzhibo.app.search.present.ZhanqiSearchPresent;
+import pub.kanzhibo.app.util.DialogHelp;
+import pub.kanzhibo.app.util.SharedPreferencesUtils;
+
+import static pub.kanzhibo.app.gloabal.Constants.Key.LOGIN_REQUEST_CODE;
+import static pub.kanzhibo.app.gloabal.Constants.Key.SAVE_WHERE;
+import static pub.kanzhibo.app.gloabal.Constants.Key.SELECT_SAVE_WHERE;
 
 /**
  * 搜索主播Fragment
  */
 public class SearchUserFragment extends BaseLceFragment<SwipeRefreshLayout, List<LiveUser>, SearchView, BaseSearchPresent>
-        implements SearchView, SwipeRefreshLayout.OnRefreshListener {
+        implements SearchView, SwipeRefreshLayout.OnRefreshListener, ToggleButton.OnToggleChanged {
 
 
     @BindView(R.id.recyclerview)
@@ -46,6 +58,7 @@ public class SearchUserFragment extends BaseLceFragment<SwipeRefreshLayout, List
     AutoRelativeLayout defaultSearchRelative;
     private LiveUserAdapter liveUserAdapter;
     private PlatForm mPlatForm;
+    private String mSearchKey;
 
     @Override
     protected int getLayoutRes() {
@@ -72,17 +85,23 @@ public class SearchUserFragment extends BaseLceFragment<SwipeRefreshLayout, List
     public void setData(List<LiveUser> data) {
         liveUserAdapter = new LiveUserAdapter(data);
         recyclerView.setAdapter(liveUserAdapter);
+        liveUserAdapter.setOnToggleChangedListernr(this);
         liveUserAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void loadData(boolean pullToRefresh) {
         //显示空界面
-        defaultSearchRelative.setVisibility(View.VISIBLE);
+        if (!pullToRefresh)
+            defaultSearchRelative.setVisibility(View.VISIBLE);
+        presenter.searchUser(false, mSearchKey, 0);
     }
 
     @Override
     protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
+        if (e instanceof UnknownHostException) {
+            return "哎呀，网络异常了";
+        }
         return "抱歉,没有找到相关主播";
     }
 
@@ -146,6 +165,12 @@ public class SearchUserFragment extends BaseLceFragment<SwipeRefreshLayout, List
     public void searchUser(SearchEvent searchEvent) {
         //todo 确保每个平台的page都是从0开始的
         defaultSearchRelative.setVisibility(View.GONE);
-        presenter.searchUser(false, searchEvent.getSearchKey(), 0);
+        mSearchKey = searchEvent.getSearchKey();
+        presenter.searchUser(false, mSearchKey, 0);
+    }
+
+    @Override
+    public void onToggle(boolean on) {
+        DialogHelp.getSelectSaveDataDialog(getActivity(), false);
     }
 }

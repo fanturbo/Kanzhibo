@@ -22,10 +22,14 @@ import pub.kanzhibo.app.R;
 import pub.kanzhibo.app.base.BaseActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import pub.kanzhibo.app.common.CommonActivity;
 import pub.kanzhibo.app.search.SearchActivity;
+import pub.kanzhibo.app.util.DialogHelp;
+
+import static pub.kanzhibo.app.gloabal.Constants.Key.LOGIN_REQUEST_CODE;
 
 public class MainActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     @BindView(R.id.toolbar)
     Toolbar mToolBar;
@@ -108,9 +112,11 @@ public class MainActivity extends BaseActivity
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
-
+            Intent intent = new Intent(this, CommonActivity.class);
+            intent.putExtra("Fragment", "login");
+            startActivityForResult(intent, LOGIN_REQUEST_CODE);
         } else if (id == R.id.nav_manage) {
-
+            DialogHelp.getSelectSaveDataDialog(this, true);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {

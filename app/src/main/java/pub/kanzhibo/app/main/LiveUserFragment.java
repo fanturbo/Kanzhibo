@@ -1,6 +1,8 @@
 package pub.kanzhibo.app.main;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -15,17 +17,27 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 
 import butterknife.BindView;
+import pub.kanzhibo.app.App;
 import pub.kanzhibo.app.R;
 import pub.kanzhibo.app.base.BaseLceFragment;
+import pub.kanzhibo.app.common.CommonActivity;
+import pub.kanzhibo.app.common.widget.ToggleButton;
 import pub.kanzhibo.app.model.liveuser.LiveUser;
+import pub.kanzhibo.app.util.DialogHelp;
+import pub.kanzhibo.app.util.SharedPreferencesUtils;
 
 import java.util.List;
+
+import static pub.kanzhibo.app.gloabal.Constants.Key.ISLOGIN;
+import static pub.kanzhibo.app.gloabal.Constants.Key.LOGIN_REQUEST_CODE;
+import static pub.kanzhibo.app.gloabal.Constants.Key.SAVE_WHERE;
+import static pub.kanzhibo.app.gloabal.Constants.Key.SELECT_SAVE_WHERE;
 
 /**
  * 关注的主播列表Fragment
  */
 public class LiveUserFragment extends BaseLceFragment<SwipeRefreshLayout, List<LiveUser>, LiveView, LivePresent>
-        implements LiveView, SwipeRefreshLayout.OnRefreshListener {
+        implements LiveView, SwipeRefreshLayout.OnRefreshListener, ToggleButton.OnToggleChanged {
 
 
     @BindView(R.id.recyclerview)
@@ -48,13 +60,14 @@ public class LiveUserFragment extends BaseLceFragment<SwipeRefreshLayout, List<L
     @Override
     public void setData(List<LiveUser> data) {
         liveUserAdapter = new LiveUserAdapter(data);
+        liveUserAdapter.setOnToggleChangedListernr(this);
         recyclerView.setAdapter(liveUserAdapter);
         liveUserAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void loadData(boolean pullToRefresh) {
-        presenter.getHuyaLiveUser(pullToRefresh);
+        presenter.getFollow(pullToRefresh);
     }
 
     @Override
@@ -98,5 +111,16 @@ public class LiveUserFragment extends BaseLceFragment<SwipeRefreshLayout, List<L
     @Override
     protected void onErrorViewClicked() {
         super.onErrorViewClicked();
+    }
+
+    //关注主播
+    @Override
+    public void onToggle(boolean on) {
+        DialogHelp.getSelectSaveDataDialog(getActivity(), false);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

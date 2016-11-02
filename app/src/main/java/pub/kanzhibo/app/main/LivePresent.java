@@ -1,5 +1,6 @@
 package pub.kanzhibo.app.main;
 
+import android.content.DialogInterface;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -20,11 +21,15 @@ import pub.kanzhibo.app.gloabal.Constants;
 import pub.kanzhibo.app.model.liveuser.LiveUser;
 import pub.kanzhibo.app.model.liveuser.UserHuyaLive;
 import pub.kanzhibo.app.model.liveuser.UserHuyaPlay;
+import pub.kanzhibo.app.util.DialogHelp;
+import pub.kanzhibo.app.util.SharedPreferencesUtils;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
 import rx.functions.Action1;
 import rx.functions.Func1;
+
+import static pub.kanzhibo.app.gloabal.Constants.Key.SAVE_WHERE;
 
 /**
  * Created by snail on 16/10/30.
@@ -51,10 +56,12 @@ public class LivePresent extends BaseRxLcePresenter<LiveView, List<LiveUser>> {
             }
         }
     };
-    ;
 
-    void getHuyaLiveUser(final boolean pullToRefresh) {
-        getView().showLoading(pullToRefresh);
-        //todo 查询本地数据库查找关注的直播（后续看情况是否保存到服务器,毕竟需求不大，哈哈）
+    public void followLive(final boolean pullToRefresh, String searchKey, int page) {
+
+    }
+
+    public void getFollow(boolean pullToRefresh) {
+
     }
 }

@@ -48,47 +48,47 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    testCompile 'junit:junit:4.12'
+    //图片加载
+//    compile 'com.facebook.fresco:fresco:0.12.0'
+    //bug收集反馈，听说bugly正在内测热修复
+    //可以用eventbus，也可以用这个
+    //View注入
+    //网络请求
+    //啥都不说了
+    //屏幕适配
+    //沉浸式标题栏
+    //mvp library
+    //oom检测，必备
+    //简化Adapter书写并且提供了各种事件处理
+    //saving and restoring activity or fragment instance state
+    // compile "frankiesardo:icepick:3.2.0"
+    // compile "frankiesardo:icepick-processor:3.2.0"
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:design:24.2.1'
     compile 'com.android.support:support-v4:24.2.1'
     compile 'com.android.support:recyclerview-v7:24.2.1'
     compile 'com.android.support:cardview-v7:24.2.1'
-    //图片加载
-//    compile 'com.facebook.fresco:fresco:0.12.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
-    //bug收集反馈，听说bugly正在内测热修复
     compile 'com.tencent.bugly:crashreport:latest.release'
     compile 'com.tencent.bugly:nativecrashreport:latest.release'
-    //可以用eventbus，也可以用这个
     compile 'com.hwangjr.rxbus:rxbus:1.0.4'
-    //View注入
     compile 'com.jakewharton:butterknife:8.4.0'
-    //网络请求
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
-    //啥都不说了
     compile 'io.reactivex:rxandroid:1.1.0'
     compile 'io.reactivex:rxjava:1.1.0'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
     compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
-    //屏幕适配
     compile 'com.zhy:autolayout:1.4.3'
-    //沉浸式标题栏
     compile 'com.jaeger.statusbaruitl:library:1.2.4'
-    //mvp library
     compile 'com.hannesdorfmann.mosby:mvp:2.0.1'
     compile 'com.hannesdorfmann.mosby:viewstate:2.0.1'
-    //oom检测，必备
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:v2.4.4'
+    compile 'com.sdsmdg.tastytoast:tastytoast:0.1.0'
+    testCompile 'junit:junit:4.12'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
     apt 'com.hannesdorfmann.annotatedadapter:processor:1.1.1'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
-    //简化Adapter书写并且提供了各种事件处理
-    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:v2.4.4'
-    compile 'com.sdsmdg.tastytoast:tastytoast:0.1.0'
-    //saving and restoring activity or fragment instance state
-    // compile "frankiesardo:icepick:3.2.0"
-    // compile "frankiesardo:icepick-processor:3.2.0"
 }

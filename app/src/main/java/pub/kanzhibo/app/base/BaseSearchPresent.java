@@ -28,10 +28,17 @@ import rx.functions.Func1;
 public abstract class BaseSearchPresent extends BaseRxLcePresenter<SearchView, List<LiveUser>> {
 
     //todo 关于设计模式----presenter
+    //todo BaseRxLcePresenter使用这个的理由？
 
     protected Subscription subscription;
 
     public abstract void searchUser(final boolean pullToRefresh, String searchKey, int page);
+
+    public void followLive(final boolean pullToRefresh, String searchKey, int page) {
+
+    }
+
+
 
     protected void preRequest(boolean pullToRefresh) {
         getView().showLoading(pullToRefresh);

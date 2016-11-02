@@ -13,5 +13,9 @@ public interface Constants {
     public interface Key {
         String WEB_URL = "web_url";
         String WEB_TITLE = "web_title";
+        String SELECT_SAVE_WHERE = "selectLocalOrServer";
+        String SAVE_WHERE = "savewhere";
+        String ISLOGIN = "islogin";
+        int LOGIN_REQUEST_CODE = 110;
     }
 }

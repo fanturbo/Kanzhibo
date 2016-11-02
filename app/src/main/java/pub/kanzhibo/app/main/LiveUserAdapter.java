@@ -21,14 +21,29 @@ import pub.kanzhibo.app.model.liveuser.LiveUser;
 import pub.kanzhibo.app.util.DialogHelp;
 import pub.kanzhibo.app.util.SharedPreferencesUtils;
 
+import static pub.kanzhibo.app.gloabal.Constants.Key.SAVE_WHERE;
+import static pub.kanzhibo.app.gloabal.Constants.Key.SELECT_SAVE_WHERE;
+
 /**
  * Created by turbo on 2016/10/28.
+ * 搜索页面也是用这个adapter
  */
 
 public class LiveUserAdapter extends BaseQuickAdapter<LiveUser, BaseViewHolder> {
 
+
+    private ToggleButton.OnToggleChanged onToggleChangedListernr;
+
     public LiveUserAdapter(List<LiveUser> data) {
         super(R.layout.item_fragment_live_user, data);
+    }
+
+    public ToggleButton.OnToggleChanged getOnToggleChangedListernr() {
+        return onToggleChangedListernr;
+    }
+
+    public void setOnToggleChangedListernr(ToggleButton.OnToggleChanged onToggleChangedListernr) {
+        this.onToggleChangedListernr = onToggleChangedListernr;
     }
 
     @Override
@@ -39,22 +54,7 @@ public class LiveUserAdapter extends BaseQuickAdapter<LiveUser, BaseViewHolder> 
                 .setText(R.id.tv_viewercount, liveUser.getViewersCount())
                 .setText(R.id.tv_live_status, liveUser.getStatus());
 
-        ((ToggleButton) viewHolder.getView(R.id.togglebutton_focus)).setOnToggleChanged(new ToggleButton.OnToggleChanged() {
-            @Override
-            public void onToggle(boolean on) {
-                //todo待完成
-                SharedPreferencesUtils.saveBoolean(mContext, "saveDataLocal", true);
-                String[] strings = {"只保存到本地", "保存到服务器"};
-                DialogHelp.getSingleChoiceDialog(mContext, "选择保存方式", strings, 1, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        TastyToast.makeText(mContext, "i = " + i, 0, 1);
-                        SharedPreferencesUtils.saveBoolean(mContext, "saveDataLocal", true);
-                    }
-                }).show();
-            }
-        });
+        ((ToggleButton) viewHolder.getView(R.id.togglebutton_focus)).setOnToggleChanged(onToggleChangedListernr);
         Glide.with(mContext).load(liveUser.getUserIconUrl()).crossFade().into((ImageView) viewHolder.getView(R.id.roundimage_roombackgroud));
-
     }
 }

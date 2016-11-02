@@ -26,6 +26,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
+import com.hannesdorfmann.mosby.mvp.MvpFragment;
+import com.hannesdorfmann.mosby.mvp.MvpPresenter;
+import com.hannesdorfmann.mosby.mvp.MvpView;
+
 import butterknife.ButterKnife;
 //import icepick.Icepick;
 
@@ -34,7 +38,7 @@ import butterknife.ButterKnife;
  *
  * @author Hannes Dorfmann
  */
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment<V extends MvpView, P extends MvpPresenter<V>> extends MvpFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,16 +64,8 @@ public abstract class BaseFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        injectDependencies();
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-    }
-
-    /**
-     * Inject the dependencies
-     */
-    protected void injectDependencies() {
-
     }
 
 }
