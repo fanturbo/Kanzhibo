@@ -1,13 +1,17 @@
 package pub.kanzhibo.app.model.liveuser;
 
+import com.avos.avoscloud.AVClassName;
+
 import pub.kanzhibo.app.model.PlatForm;
 
 /**
  * Created by turbo on 2016/10/28.
  */
-
 public class LiveUser {
+    //平台
     PlatForm platform;
+    //uid
+    String uid;
     //主播用户名
     String userName;
     //直播间名称
@@ -22,6 +26,14 @@ public class LiveUser {
     String userIconUrl;
     //房间背景图片
     String roomBackgroudUrl;
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
     public String getUserName() {
         return userName;

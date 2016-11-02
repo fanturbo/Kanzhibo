@@ -9,8 +9,13 @@ import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.text.TextUtils;
 
+import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVUser;
+import com.hwangjr.rxbus.RxBus;
+
 import pub.kanzhibo.app.App;
 import pub.kanzhibo.app.common.CommonActivity;
+import pub.kanzhibo.app.model.event.FollowEvent;
 
 import static pub.kanzhibo.app.gloabal.Constants.Key.LOGIN_REQUEST_CODE;
 import static pub.kanzhibo.app.gloabal.Constants.Key.SAVE_WHERE;
@@ -144,20 +149,6 @@ public class DialogHelp {
                     }
                 }
             }).show();
-        } else {
-            //根据选择的方式进行保存数据 本地or服务器
-            if (index == 0) {
-                //todo 使用realm保存本地数据
-            } else {
-                if (App.isLogIn()) {
-
-                } else {
-                    //跳到登录页面
-                    Intent intent = new Intent(activity, CommonActivity.class);
-                    intent.putExtra("Fragment", "login");
-                    activity.startActivityForResult(intent, LOGIN_REQUEST_CODE);
-                }
-            }
         }
     }
 }

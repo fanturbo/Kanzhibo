@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 
 import com.hannesdorfmann.mosby.mvp.MvpView;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
+import com.hwangjr.rxbus.RxBus;
+import com.hwangjr.rxbus.annotation.Subscribe;
 
 import butterknife.BindView;
 import pub.kanzhibo.app.App;
@@ -22,6 +24,7 @@ import pub.kanzhibo.app.R;
 import pub.kanzhibo.app.base.BaseLceFragment;
 import pub.kanzhibo.app.common.CommonActivity;
 import pub.kanzhibo.app.common.widget.ToggleButton;
+import pub.kanzhibo.app.model.event.FollowEvent;
 import pub.kanzhibo.app.model.liveuser.LiveUser;
 import pub.kanzhibo.app.util.DialogHelp;
 import pub.kanzhibo.app.util.SharedPreferencesUtils;
@@ -37,7 +40,7 @@ import static pub.kanzhibo.app.gloabal.Constants.Key.SELECT_SAVE_WHERE;
  * 关注的主播列表Fragment
  */
 public class LiveUserFragment extends BaseLceFragment<SwipeRefreshLayout, List<LiveUser>, LiveView, LivePresent>
-        implements LiveView, SwipeRefreshLayout.OnRefreshListener, ToggleButton.OnToggleChanged {
+        implements LiveView, SwipeRefreshLayout.OnRefreshListener {
 
 
     @BindView(R.id.recyclerview)
@@ -54,20 +57,20 @@ public class LiveUserFragment extends BaseLceFragment<SwipeRefreshLayout, List<L
         super.onViewCreated(view, savedInstanceState);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         contentView.setOnRefreshListener(this);
+        RxBus.get().register(this);
         loadData(false);
     }
 
     @Override
     public void setData(List<LiveUser> data) {
         liveUserAdapter = new LiveUserAdapter(data);
-        liveUserAdapter.setOnToggleChangedListernr(this);
         recyclerView.setAdapter(liveUserAdapter);
         liveUserAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void loadData(boolean pullToRefresh) {
-        presenter.getFollow(pullToRefresh);
+//        presenter.getFollow(pullToRefresh);
     }
 
     @Override
@@ -113,14 +116,35 @@ public class LiveUserFragment extends BaseLceFragment<SwipeRefreshLayout, List<L
         super.onErrorViewClicked();
     }
 
-    //关注主播
-    @Override
-    public void onToggle(boolean on) {
-        DialogHelp.getSelectSaveDataDialog(getActivity(), false);
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        RxBus.get().unregister(this);
+    }
+
+    @Subscribe
+    public void followUser(FollowEvent followEvent) {
+        //todo 当dialog确定结果时才继续往下执行
+        DialogHelp.getSelectSaveDataDialog(getActivity(), false);
+        final int index = Integer.parseInt(SharedPreferencesUtils.getString(getActivity(), SAVE_WHERE, "0"));
+        //根据选择的方式进行保存数据 本地or服务器
+        if (index == 0) {
+            //todo 使用realm保存本地数据
+        } else {
+            if (App.isLogIn()) {
+                presenter.followLive(followEvent.getfollow(), followEvent.getLiveUser());
+            } else {
+                //跳到登录页面
+                Intent intent = new Intent(getActivity(), CommonActivity.class);
+                intent.putExtra("Fragment", "login");
+                getActivity().startActivityForResult(intent, LOGIN_REQUEST_CODE);
+            }
+        }
     }
 }

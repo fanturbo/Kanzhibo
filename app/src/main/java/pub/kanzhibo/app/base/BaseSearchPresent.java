@@ -1,5 +1,10 @@
 package pub.kanzhibo.app.base;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVRelation;
+import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.SaveCallback;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -34,10 +39,20 @@ public abstract class BaseSearchPresent extends BaseRxLcePresenter<SearchView, L
 
     public abstract void searchUser(final boolean pullToRefresh, String searchKey, int page);
 
-    public void followLive(final boolean pullToRefresh, String searchKey, int page) {
-
+    public void followLive(final boolean follow, LiveUser liveUser) {
+        //根据follow添加或者删除关注的主播
+        final AVObject followUser = new AVObject("LiveUser");
+        followUser.put("uid", liveUser.getUid());
+        followUser.put("platform", liveUser.getPlatform().getPlatform());
+        followUser.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(AVException e) {
+                AVRelation<AVObject> relation = AVUser.getCurrentUser().getRelation("followLiveUser");// 新建一个 AVRelation
+                relation.add(followUser);
+                AVUser.getCurrentUser().saveInBackground();
+            }
+        });
     }
-
 
 
     protected void preRequest(boolean pullToRefresh) {
@@ -45,6 +60,7 @@ public abstract class BaseSearchPresent extends BaseRxLcePresenter<SearchView, L
         if (subscription != null && subscription.isUnsubscribed())
             subscription.unsubscribe();
     }
+
     public Subscriber<List<LiveUser>> getSubscriber() {
         return subscriber = new Subscriber<List<LiveUser>>() {
             @Override
@@ -60,9 +76,9 @@ public abstract class BaseSearchPresent extends BaseRxLcePresenter<SearchView, L
             @Override
             public void onNext(List<LiveUser> liveUsers) {
                 if (isViewAttached()) {
-                    if(liveUsers.size()==0){
-                        getView().showError(null,false);
-                    }else {
+                    if (liveUsers.size() == 0) {
+                        getView().showError(null, false);
+                    } else {
                         getView().setData(liveUsers);
                         getView().showContent();
                         getView().stopRefresh();

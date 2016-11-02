@@ -28,6 +28,7 @@ import pub.kanzhibo.app.common.CommonActivity;
 import pub.kanzhibo.app.common.widget.ToggleButton;
 import pub.kanzhibo.app.main.LiveUserAdapter;
 import pub.kanzhibo.app.model.PlatForm;
+import pub.kanzhibo.app.model.event.FollowEvent;
 import pub.kanzhibo.app.model.event.SearchEvent;
 import pub.kanzhibo.app.model.liveuser.LiveUser;
 import pub.kanzhibo.app.search.present.DouyuSearchPresent;
@@ -46,7 +47,7 @@ import static pub.kanzhibo.app.gloabal.Constants.Key.SELECT_SAVE_WHERE;
  * 搜索主播Fragment
  */
 public class SearchUserFragment extends BaseLceFragment<SwipeRefreshLayout, List<LiveUser>, SearchView, BaseSearchPresent>
-        implements SearchView, SwipeRefreshLayout.OnRefreshListener, ToggleButton.OnToggleChanged {
+        implements SearchView, SwipeRefreshLayout.OnRefreshListener {
 
 
     @BindView(R.id.recyclerview)
@@ -85,7 +86,6 @@ public class SearchUserFragment extends BaseLceFragment<SwipeRefreshLayout, List
     public void setData(List<LiveUser> data) {
         liveUserAdapter = new LiveUserAdapter(data);
         recyclerView.setAdapter(liveUserAdapter);
-        liveUserAdapter.setOnToggleChangedListernr(this);
         liveUserAdapter.notifyDataSetChanged();
     }
 
@@ -168,9 +168,23 @@ public class SearchUserFragment extends BaseLceFragment<SwipeRefreshLayout, List
         mSearchKey = searchEvent.getSearchKey();
         presenter.searchUser(false, mSearchKey, 0);
     }
-
-    @Override
-    public void onToggle(boolean on) {
+    @Subscribe
+    public void followUser(FollowEvent followEvent) {
+        //todo 当dialog确定结果时才继续往下执行
         DialogHelp.getSelectSaveDataDialog(getActivity(), false);
+        final int index = Integer.parseInt(SharedPreferencesUtils.getString(getActivity(), SAVE_WHERE, "0"));
+        //根据选择的方式进行保存数据 本地or服务器
+        if (index == 0) {
+            //todo 使用realm保存本地数据
+        } else {
+            if (App.isLogIn()) {
+                presenter.followLive(followEvent.getfollow(),followEvent.getLiveUser());
+            } else {
+                //跳到登录页面
+                Intent intent = new Intent(getActivity(), CommonActivity.class);
+                intent.putExtra("Fragment", "login");
+                getActivity().startActivityForResult(intent, LOGIN_REQUEST_CODE);
+            }
+        }
     }
 }

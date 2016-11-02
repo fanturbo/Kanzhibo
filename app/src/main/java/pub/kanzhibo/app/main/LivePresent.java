@@ -3,6 +3,13 @@ package pub.kanzhibo.app.main;
 import android.content.DialogInterface;
 import android.util.Log;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVQuery;
+import com.avos.avoscloud.AVRelation;
+import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.FindCallback;
+import com.avos.avoscloud.SaveCallback;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -57,11 +64,30 @@ public class LivePresent extends BaseRxLcePresenter<LiveView, List<LiveUser>> {
         }
     };
 
-    public void followLive(final boolean pullToRefresh, String searchKey, int page) {
-
+    public void followLive(final boolean follow, LiveUser liveUser) {
+        //根据follow添加或者删除关注的主播
+        final AVObject followUser = new AVObject("LiveUser");
+        followUser.put("uid", liveUser.getUid());
+        followUser.put("platform", liveUser.getPlatform().getPlatform());
+        followUser.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(AVException e) {
+                AVRelation<AVObject> relation = AVUser.getCurrentUser().getRelation("followLiveUser");// 新建一个 AVRelation
+                relation.add(followUser);
+                AVUser.getCurrentUser().saveInBackground();
+            }
+        });
     }
 
     public void getFollow(boolean pullToRefresh) {
-
+        // 查询关注的主播
+        AVQuery<AVObject> query = new AVQuery<>("LiveUser");
+        query.whereEqualTo("priority", 0);
+        query.findInBackground(new FindCallback<AVObject>() {
+            @Override
+            public void done(List<AVObject> list, AVException e) {
+                List<AVObject> priorityEqualsZeroTodos = list;// 符合 priority = 0 的 Todo 数组
+            }
+        });
     }
 }
