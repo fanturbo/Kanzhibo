@@ -10,31 +10,16 @@ import com.avos.avoscloud.AVRelation;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.SaveCallback;
-import com.google.gson.Gson;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.ResponseBody;
+import pub.kanzhibo.app.App;
 import pub.kanzhibo.app.api.ApiClient;
-import pub.kanzhibo.app.api.RxSchedulers;
 import pub.kanzhibo.app.base.BaseRxLcePresenter;
-import pub.kanzhibo.app.gloabal.Constants;
+import pub.kanzhibo.app.common.EmptyException;
 import pub.kanzhibo.app.model.liveuser.LiveUser;
-import pub.kanzhibo.app.model.liveuser.UserHuyaLive;
-import pub.kanzhibo.app.model.liveuser.UserHuyaPlay;
-import pub.kanzhibo.app.util.DialogHelp;
-import pub.kanzhibo.app.util.SharedPreferencesUtils;
 import rx.Observable;
-import rx.Observer;
 import rx.Subscriber;
-import rx.functions.Action1;
-import rx.functions.Func1;
 
 import static pub.kanzhibo.app.gloabal.Constants.Key.SAVE_WHERE;
 
@@ -81,13 +66,28 @@ public class LivePresent extends BaseRxLcePresenter<LiveView, List<LiveUser>> {
 
     public void getFollow(boolean pullToRefresh) {
         // 查询关注的主播
-        AVQuery<AVObject> query = new AVQuery<>("LiveUser");
-        query.whereEqualTo("priority", 0);
-        query.findInBackground(new FindCallback<AVObject>() {
-            @Override
-            public void done(List<AVObject> list, AVException e) {
-                List<AVObject> priorityEqualsZeroTodos = list;// 符合 priority = 0 的 Todo 数组
-            }
-        });
+        getView().showLoading(pullToRefresh);
+        if (App.isLogIn()) {
+            AVObject todoFolder = AVObject.createWithoutData("_User", AVUser.getCurrentUser().getObjectId());
+            AVRelation<AVObject> relation = todoFolder.getRelation("followLiveUser");
+            AVQuery<AVObject> query = relation.getQuery();
+            query.findInBackground(new FindCallback<AVObject>() {
+                @Override
+                public void done(List<AVObject> list, AVException e) {
+                    if (isViewAttached()) {
+                        if (list == null || list.size() == 0) {
+                            getView().showError(new EmptyException(), false);
+                        }
+                        //根据uid和platform查出关注的主播的信息
+//                        ApiClient.getInstance().getLiveApi()
+//                        getView().setData(list);
+                        getView().showContent();
+                        getView().stopRefresh();
+                    }
+                }
+            });
+        } else {
+            //展示热门的主播列表
+        }
     }
 }

@@ -1,9 +1,16 @@
 package pub.kanzhibo.app.base;
 
+import android.content.DialogInterface;
+
+import com.avos.avoscloud.AVCloudQueryResult;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVRelation;
 import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.CloudQueryCallback;
+import com.avos.avoscloud.DeleteCallback;
+import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.google.gson.Gson;
 
@@ -16,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.ResponseBody;
+import pub.kanzhibo.app.App;
 import pub.kanzhibo.app.api.ApiClient;
 import pub.kanzhibo.app.api.RxSchedulers;
 import pub.kanzhibo.app.gloabal.Constants;
@@ -23,9 +31,14 @@ import pub.kanzhibo.app.model.liveuser.LiveUser;
 import pub.kanzhibo.app.model.liveuser.UserHuyaLive;
 import pub.kanzhibo.app.model.liveuser.UserHuyaPlay;
 import pub.kanzhibo.app.search.SearchView;
+import pub.kanzhibo.app.util.DialogHelp;
+import pub.kanzhibo.app.util.SharedPreferencesUtils;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.functions.Func1;
+
+import static pub.kanzhibo.app.gloabal.Constants.Key.SAVE_WHERE;
+import static pub.kanzhibo.app.gloabal.Constants.Key.SELECT_SAVE_WHERE;
 
 /**
  * Created by snail on 16/10/30.
@@ -44,14 +57,33 @@ public abstract class BaseSearchPresent extends BaseRxLcePresenter<SearchView, L
         final AVObject followUser = new AVObject("LiveUser");
         followUser.put("uid", liveUser.getUid());
         followUser.put("platform", liveUser.getPlatform().getPlatform());
-        followUser.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(AVException e) {
-                AVRelation<AVObject> relation = AVUser.getCurrentUser().getRelation("followLiveUser");// 新建一个 AVRelation
-                relation.add(followUser);
-                AVUser.getCurrentUser().saveInBackground();
-            }
-        });
+        if (follow) {
+            followUser.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(AVException e) {
+                    if (e == null) {
+                        AVRelation<AVObject> relation = AVUser.getCurrentUser().getRelation("followLiveUser");// 新建一个 AVRelation
+                        relation.add(followUser);
+                        AVUser.getCurrentUser().saveInBackground();
+                    }
+                }
+            });
+        } else {
+            AVQuery<AVObject> query = new AVQuery<>("LiveUser");
+            query.whereEqualTo("uid", liveUser.getUid());
+            query.findInBackground(new FindCallback<AVObject>() {
+                @Override
+                public void done(List<AVObject> list, AVException e) {
+                    AVQuery.doCloudQueryInBackground("delete from LiveUser where objectId='" + list.get(0).getObjectId() + "'", new CloudQueryCallback<AVCloudQueryResult>() {
+                        @Override
+                        public void done(AVCloudQueryResult avCloudQueryResult, AVException e) {
+
+                        }
+                    });
+                }
+            });
+
+        }
     }
 
 

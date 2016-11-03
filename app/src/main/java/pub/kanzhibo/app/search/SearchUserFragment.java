@@ -2,12 +2,16 @@ package pub.kanzhibo.app.search;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Animatable;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
@@ -38,7 +42,11 @@ import pub.kanzhibo.app.search.present.QuanminSearchPresent;
 import pub.kanzhibo.app.search.present.ZhanqiSearchPresent;
 import pub.kanzhibo.app.util.DialogHelp;
 import pub.kanzhibo.app.util.SharedPreferencesUtils;
+import rx.Observable;
+import rx.Subscriber;
+import rx.functions.Action1;
 
+import static android.app.Activity.RESULT_OK;
 import static pub.kanzhibo.app.gloabal.Constants.Key.LOGIN_REQUEST_CODE;
 import static pub.kanzhibo.app.gloabal.Constants.Key.SAVE_WHERE;
 import static pub.kanzhibo.app.gloabal.Constants.Key.SELECT_SAVE_WHERE;
@@ -47,7 +55,7 @@ import static pub.kanzhibo.app.gloabal.Constants.Key.SELECT_SAVE_WHERE;
  * 搜索主播Fragment
  */
 public class SearchUserFragment extends BaseLceFragment<SwipeRefreshLayout, List<LiveUser>, SearchView, BaseSearchPresent>
-        implements SearchView, SwipeRefreshLayout.OnRefreshListener {
+        implements SearchView, SwipeRefreshLayout.OnRefreshListener, LiveUserAdapter.LiveUserFollowListner {
 
 
     @BindView(R.id.recyclerview)
@@ -57,6 +65,10 @@ public class SearchUserFragment extends BaseLceFragment<SwipeRefreshLayout, List
 //    RecyclerView histroyRecyclerView;
     @BindView(R.id.relative_default_search)
     AutoRelativeLayout defaultSearchRelative;
+    @BindView(R.id.iv_empty_tips)
+    ImageView emptyTipsIv;
+    @BindView(R.id.tv_empty_tips)
+    TextView emptyTipsTv;
     private LiveUserAdapter liveUserAdapter;
     private PlatForm mPlatForm;
     private String mSearchKey;
@@ -79,12 +91,14 @@ public class SearchUserFragment extends BaseLceFragment<SwipeRefreshLayout, List
             }
         });
         contentView.setOnRefreshListener(this);
+        emptyTipsTv.setText("还木有进行搜索");
         loadData(false);
     }
 
     @Override
     public void setData(List<LiveUser> data) {
         liveUserAdapter = new LiveUserAdapter(data);
+        liveUserAdapter.setLiveUserFollowListner(this);
         recyclerView.setAdapter(liveUserAdapter);
         liveUserAdapter.notifyDataSetChanged();
     }
@@ -168,23 +182,23 @@ public class SearchUserFragment extends BaseLceFragment<SwipeRefreshLayout, List
         mSearchKey = searchEvent.getSearchKey();
         presenter.searchUser(false, mSearchKey, 0);
     }
+
     @Subscribe
-    public void followUser(FollowEvent followEvent) {
-        //todo 当dialog确定结果时才继续往下执行
-        DialogHelp.getSelectSaveDataDialog(getActivity(), false);
-        final int index = Integer.parseInt(SharedPreferencesUtils.getString(getActivity(), SAVE_WHERE, "0"));
-        //根据选择的方式进行保存数据 本地or服务器
-        if (index == 0) {
-            //todo 使用realm保存本地数据
-        } else {
-            if (App.isLogIn()) {
-                presenter.followLive(followEvent.getfollow(),followEvent.getLiveUser());
-            } else {
-                //跳到登录页面
-                Intent intent = new Intent(getActivity(), CommonActivity.class);
-                intent.putExtra("Fragment", "login");
-                getActivity().startActivityForResult(intent, LOGIN_REQUEST_CODE);
-            }
+    public void followUser(final FollowEvent followEvent) {
+        //5个列表重用的同一个Fragment，所以当通知fragment执行关注操作时，会通知5个SearchUserFragment对象
+        //所以用platform做了区分
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == LOGIN_REQUEST_CODE && resultCode == RESULT_OK) {
+            loadData(true);
         }
+    }
+
+    @Override
+    public void onFollow(boolean followStatus, LiveUser liveUser) {
+        presenter.followLive(followStatus, liveUser);
     }
 }

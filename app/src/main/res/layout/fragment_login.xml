@@ -10,7 +10,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="pub.kanzhibo.app.login.LoginActivity">
 
-    <!-- Login progress -->
+    <!-- AVUser progress -->
     <ProgressBar
         android:id="@+id/login_progress"
         style="?android:attr/progressBarStyleLarge"

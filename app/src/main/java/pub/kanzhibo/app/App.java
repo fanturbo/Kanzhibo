@@ -18,7 +18,7 @@ import static pub.kanzhibo.app.gloabal.Constants.Key.ISLOGIN;
  */
 public class App extends Application {
 
-    private static Context context;
+    public static Context context;
 
     @Override
     public void onCreate() {
@@ -32,7 +32,11 @@ public class App extends Application {
         return SharedPreferencesUtils.getBoolean(context, ISLOGIN, false);
     }
 
-    public static void LogIn(boolean isLogIn) {
-        SharedPreferencesUtils.saveBoolean(context, ISLOGIN, isLogIn);
+    public static void logIn() {
+        SharedPreferencesUtils.saveBoolean(context, ISLOGIN, true);
+    }
+
+    public static void logOut() {
+        SharedPreferencesUtils.saveBoolean(context, ISLOGIN, false);
     }
 }

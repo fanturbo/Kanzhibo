@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:toggle="http://schemas.android.com/tools"
+    xmlns:toggle="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="160dp"
@@ -27,6 +27,7 @@
             android:background="@drawable/live_status_backgroud"
             android:gravity="center"
             android:text="在直播"
+            android:textColor="@color/white"
             android:textSize="40px" />
 
         <pub.kanzhibo.app.common.widget.RoundImageView
@@ -44,7 +45,6 @@
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/roundimage_roombackgroud"
             android:layout_marginLeft="32px"
-            android:layout_marginTop="32px"
             android:layout_toRightOf="@id/roundimage_roombackgroud"
             android:text="TH000"
             android:textAppearance="?attr/textAppearanceListItem" />
@@ -77,11 +77,9 @@
             android:layout_height="90px"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="40px"
-            toggle:tbBorderWidth="2dptogglebutton_focus"
-            toggle:tbOffBorderColor="#000"
-            toggle:tbOffColor="#ddd"
-            toggle:tbOnColor="#f00"
-            toggle:tbSpotColor="#00f" />
+            android:layout_marginRight="40px"
+            toggle:tbBorderWidth="2px"
+            toggle:tbOffColor="@color/white"
+            toggle:tbOnColor="@color/base_color" />
     </com.zhy.autolayout.AutoRelativeLayout>
 </android.support.v7.widget.CardView>

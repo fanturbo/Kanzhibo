@@ -3,6 +3,7 @@ package pub.kanzhibo.app.common.widget;
 /**
  * Created by snail on 16/11/1.
  */
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -26,47 +27,78 @@ import pub.kanzhibo.app.R;
 
 /**
  * @author ThinkPad
- *
  */
-public class ToggleButton extends View{
+public class ToggleButton extends View {
     private SpringSystem springSystem;
-    private Spring spring ;
+    private Spring spring;
     /** */
     private float radius;
-    /** 开启颜色*/
+    /**
+     * 开启颜色
+     */
     private int onColor = Color.parseColor("#4ebb7f");
-    /** 关闭颜色*/
+    /**
+     * 关闭颜色
+     */
     private int offBorderColor = Color.parseColor("#dadbda");
-    /** 灰色带颜色*/
+    /**
+     * 灰色带颜色
+     */
     private int offColor = Color.parseColor("#ffffff");
-    /** 手柄颜色*/
+    /**
+     * 手柄颜色
+     */
     private int spotColor = Color.parseColor("#ffffff");
-    /** 边框颜色*/
+    /**
+     * 边框颜色
+     */
     private int borderColor = offBorderColor;
-    /** 画笔*/
-    private Paint paint ;
-    /** 开关状态*/
+    /**
+     * 画笔
+     */
+    private Paint paint;
+    /**
+     * 开关状态
+     */
     private boolean toggleOn = false;
-    /** 边框大小*/
+    /**
+     * 边框大小
+     */
     private int borderWidth = 2;
-    /** 垂直中心*/
+    /**
+     * 垂直中心
+     */
     private float centerY;
-    /** 按钮的开始和结束位置*/
+    /**
+     * 按钮的开始和结束位置
+     */
     private float startX, endX;
-    /** 手柄X位置的最小和最大值*/
+    /**
+     * 手柄X位置的最小和最大值
+     */
     private float spotMinX, spotMaxX;
-    /**手柄大小 */
-    private int spotSize ;
-    /** 手柄X位置*/
+    /**
+     * 手柄大小
+     */
+    private int spotSize;
+    /**
+     * 手柄X位置
+     */
     private float spotX;
-    /** 关闭时内部灰色带高度*/
+    /**
+     * 关闭时内部灰色带高度
+     */
     private float offLineWidth;
     /** */
     private RectF rect = new RectF();
-    /** 默认使用动画*/
+    /**
+     * 默认使用动画
+     */
     private boolean defaultAnimate = true;
 
-    /** 是否默认处于打开状态*/
+    /**
+     * 是否默认处于打开状态
+     */
     private boolean isDefaultOn = false;
 
     private OnToggleChanged listener;
@@ -74,13 +106,15 @@ public class ToggleButton extends View{
     private ToggleButton(Context context) {
         super(context);
     }
+
     public ToggleButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        setup(attrs);
+        setup(attrs,context);
     }
+
     public ToggleButton(Context context, AttributeSet attrs) {
         super(context, attrs);
-        setup(attrs);
+        setup(attrs,context);
     }
 
     @Override
@@ -94,7 +128,7 @@ public class ToggleButton extends View{
         spring.addListener(springListener);
     }
 
-    public void setup(AttributeSet attrs) {
+    public void setup(AttributeSet attrs,Context context) {
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setStyle(Style.FILL);
         paint.setStrokeCap(Cap.ROUND);
@@ -109,8 +143,8 @@ public class ToggleButton extends View{
                 toggle(defaultAnimate);
             }
         });
-
-        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.ToggleButton);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs,
+                R.styleable.ToggleButton);
         offBorderColor = typedArray.getColor(R.styleable.ToggleButton_tbOffBorderColor, offBorderColor);
         onColor = typedArray.getColor(R.styleable.ToggleButton_tbOnColor, onColor);
         spotColor = typedArray.getColor(R.styleable.ToggleButton_tbSpotColor, spotColor);
@@ -135,21 +169,21 @@ public class ToggleButton extends View{
         toggleOn = !toggleOn;
         takeEffect(animate);
 
-        if(listener != null){
+        if (listener != null) {
             listener.onToggle(toggleOn);
         }
     }
 
     public void toggleOn() {
         setToggleOn();
-        if(listener != null){
+        if (listener != null) {
             listener.onToggle(toggleOn);
         }
     }
 
     public void toggleOff() {
         setToggleOff();
-        if(listener != null){
+        if (listener != null) {
             listener.onToggle(toggleOn);
         }
     }
@@ -162,9 +196,9 @@ public class ToggleButton extends View{
     }
 
     /**
-     * @param animate    asd
+     * @param animate asd
      */
-    public void setToggleOn(boolean animate){
+    public void setToggleOn(boolean animate) {
         toggleOn = true;
         takeEffect(animate);
     }
@@ -182,9 +216,9 @@ public class ToggleButton extends View{
     }
 
     private void takeEffect(boolean animate) {
-        if(animate){
+        if (animate) {
             spring.setEndValue(toggleOn ? 1 : 0);
-        }else{
+        } else {
             //这里没有调用spring，所以spring里的当前值没有变更，这里要设置一下，同步两边的当前值
             spring.setCurrentValue(toggleOn ? 1 : 0);
             calculateEffect(toggleOn ? 1 : 0);
@@ -202,12 +236,12 @@ public class ToggleButton extends View{
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
 
         Resources r = Resources.getSystem();
-        if(widthMode == MeasureSpec.UNSPECIFIED || widthMode == MeasureSpec.AT_MOST){
+        if (widthMode == MeasureSpec.UNSPECIFIED || widthMode == MeasureSpec.AT_MOST) {
             widthSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, r.getDisplayMetrics());
             widthMeasureSpec = MeasureSpec.makeMeasureSpec(widthSize, MeasureSpec.EXACTLY);
         }
 
-        if(heightMode == MeasureSpec.UNSPECIFIED || heightSize == MeasureSpec.AT_MOST){
+        if (heightMode == MeasureSpec.UNSPECIFIED || heightSize == MeasureSpec.AT_MOST) {
             heightSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 30, r.getDisplayMetrics());
             heightMeasureSpec = MeasureSpec.makeMeasureSpec(heightSize, MeasureSpec.EXACTLY);
         }
@@ -237,7 +271,7 @@ public class ToggleButton extends View{
     }
 
 
-    SimpleSpringListener springListener = new SimpleSpringListener(){
+    SimpleSpringListener springListener = new SimpleSpringListener() {
         @Override
         public void onSpringUpdate(Spring spring) {
             final double value = spring.getCurrentValue();
@@ -257,7 +291,7 @@ public class ToggleButton extends View{
         paint.setColor(borderColor);
         canvas.drawRoundRect(rect, radius, radius, paint);
 
-        if(offLineWidth > 0){
+        if (offLineWidth > 0) {
             final float cy = offLineWidth * 0.5f;
             rect.set(spotX - cy, centerY - cy, endX + cy, centerY + cy);
             paint.setColor(offColor);
@@ -309,11 +343,10 @@ public class ToggleButton extends View{
 
     /**
      * @author ThinkPad
-     *
      */
-    public interface OnToggleChanged{
+    public interface  OnToggleChanged {
         /**
-         * @param on     = =
+         * @param on = =
          */
         public void onToggle(boolean on);
     }
@@ -326,6 +359,7 @@ public class ToggleButton extends View{
     public boolean isAnimate() {
         return defaultAnimate;
     }
+
     public void setAnimate(boolean animate) {
         this.defaultAnimate = animate;
     }

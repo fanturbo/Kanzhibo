@@ -28,7 +28,13 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-
+    <string name="avoscloud_feedback_thread_activity_title">用户反馈</string>
+    <string name="avoscloud_feedback_send_text">发送</string>
+    <string name="avoscloud_feedback_new_item">您的反馈有了新回复</string>
+    <string name="avoscloud_feedback_input_hint">填写反馈</string>
+    <string name="avoscloud_feedback_contact_hint">联系方式</string>
+    <string name="avoscloud_feedback_just_now">刚刚</string>
+    <string name="avoscloud_feedback_select_image">选取图片</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -38,6 +38,8 @@
         <activity
             android:name=".common.CommonActivity"
             android:theme="@style/AppTheme"></activity>
+        <activity android:name=".common.WebViewActivity"></activity>
+        <activity android:name="com.avos.avoscloud.feedback.ThreadActivity"></activity>
     </application>
 
 </manifest>

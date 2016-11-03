@@ -4,11 +4,6 @@ import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.SignUpCallback;
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
-import com.hannesdorfmann.mosby.mvp.MvpPresenter;
-import com.jakewharton.rxbinding.widget.RxTextView;
-
-import pub.kanzhibo.app.base.BaseRxLcePresenter;
-import pub.kanzhibo.app.model.Login;
 
 /**
  * Created by turbo on 2016/11/2.

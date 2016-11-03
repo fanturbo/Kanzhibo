@@ -5,4 +5,17 @@
         <enum name="round" value="1" />
     </attr>
     <attr name="borderRadius" format="dimension" />
+    <declare-styleable name="RoundImageView">
+        <attr name="borderRadius" />
+        <attr name="type" />
+    </declare-styleable>
+    <declare-styleable name="ToggleButton">
+        <attr name="tbBorderWidth" format="dimension"/>
+        <attr name="tbOffBorderColor" format="reference|color"/>
+        <attr name="tbOffColor" format="reference|color"/>
+        <attr name="tbOnColor" format="reference|color"/>
+        <attr name="tbSpotColor" format="reference|color"/>
+        <attr name="tbAnimate" format="reference|boolean"/>
+        <attr name="tbAsDefaultOn" format="reference|boolean"/>
+    </declare-styleable>
 </resources>

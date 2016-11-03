@@ -1,9 +1,7 @@
 package pub.kanzhibo.app.login;
 
+import com.avos.avoscloud.AVUser;
 import com.hannesdorfmann.mosby.mvp.MvpView;
-import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
-
-import pub.kanzhibo.app.model.Login;
 
 /**
  * Created by turbo on 2016/11/2.
@@ -15,5 +13,5 @@ public interface LoginView extends MvpView {
 
     public void showLoading();
 
-    public void loginSuccessful();
+    void loginSuccessful(AVUser user);
 }

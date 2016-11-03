@@ -8,17 +8,6 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.text.TextUtils;
-
-import com.avos.avoscloud.AVObject;
-import com.avos.avoscloud.AVUser;
-import com.hwangjr.rxbus.RxBus;
-
-import pub.kanzhibo.app.App;
-import pub.kanzhibo.app.common.CommonActivity;
-import pub.kanzhibo.app.model.event.FollowEvent;
-
-import static pub.kanzhibo.app.gloabal.Constants.Key.LOGIN_REQUEST_CODE;
-import static pub.kanzhibo.app.gloabal.Constants.Key.SAVE_WHERE;
 import static pub.kanzhibo.app.gloabal.Constants.Key.SELECT_SAVE_WHERE;
 
 /**
@@ -127,28 +116,11 @@ public class DialogHelp {
         return getSingleChoiceDialog(context, "", arrays, selectIndex, onClickListener);
     }
 
-    public static void getSelectSaveDataDialog(final Activity activity, boolean alwaysShow) {
-        final int index = Integer.parseInt(SharedPreferencesUtils.getString(activity, SAVE_WHERE, "0"));
-        if (!SharedPreferencesUtils.getBoolean(activity, SELECT_SAVE_WHERE, false) || alwaysShow) {
+    public static void getSelectSaveDataDialog(final Context context, boolean alwaysShow, int index, DialogInterface.OnClickListener onClickListener) {
+        if (!SharedPreferencesUtils.getBoolean(context, SELECT_SAVE_WHERE, false) || alwaysShow) {
             String[] strings = {"只保存到本地", "保存到服务器"};
-            final int[] tempSelectedIndex = {index};
-            getSingleChoiceDialog(activity, "选择保存方式", strings, index, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    switch (i) {
-                        case 0:
-                            tempSelectedIndex[0] = 0;
-                            break;
-                        case 1:
-                            tempSelectedIndex[0] = 1;
-                            break;
-                        case DialogInterface.BUTTON_POSITIVE:
-                            SharedPreferencesUtils.saveString(activity, SAVE_WHERE, "" + tempSelectedIndex[0]);
-                            SharedPreferencesUtils.saveBoolean(activity, SELECT_SAVE_WHERE, true);
-                            break;
-                    }
-                }
-            }).show();
+            getSingleChoiceDialog(context, "选择保存方式", strings, index, onClickListener)
+                    .show();
         }
     }
 }

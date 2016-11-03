@@ -15,6 +15,7 @@ import pub.kanzhibo.app.api.ApiClient;
 import pub.kanzhibo.app.api.RxSchedulers;
 import pub.kanzhibo.app.base.BaseSearchPresent;
 import pub.kanzhibo.app.gloabal.Constants;
+import pub.kanzhibo.app.model.PlatForm;
 import pub.kanzhibo.app.model.liveuser.LiveUser;
 import pub.kanzhibo.app.model.liveuser.LiveUserPanda;
 import pub.kanzhibo.app.model.liveuser.UserHuyaLive;
@@ -41,12 +42,14 @@ public class PandaSearchPresent extends BaseSearchPresent {
                             List<LiveUserPanda.DataEntity.ItemsEntity> items = liveUserPanda.getData().getItems();
                             for (LiveUserPanda.DataEntity.ItemsEntity entity : items) {
                                 LiveUser liveUser = new LiveUser();
+                                liveUser.setUid(entity.getRoomid());
+                                liveUser.setPlatform(PlatForm.PANDA);
                                 liveUser.setUserName(entity.getNickname());
                                 //todo 应该查询本地数据库
                                 liveUser.setHasFocus(false);
                                 liveUser.setRoomTitle(entity.getName());
                                 liveUser.setUserIconUrl(entity.getPictures().getImg());
-                                liveUser.setViewersCount("关注人数" + entity.getFans());
+                                liveUser.setViewersCount("关注人数:" + entity.getFans());
                                 liveUser.setStatus("2".equals(entity.getStatus()) ? "在直播" : "未开播");
                                 result.add(liveUser);
                             }

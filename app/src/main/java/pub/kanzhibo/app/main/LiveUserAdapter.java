@@ -34,6 +34,17 @@ import static pub.kanzhibo.app.gloabal.Constants.Key.SELECT_SAVE_WHERE;
 public class LiveUserAdapter extends BaseQuickAdapter<LiveUser, BaseViewHolder> {
 
 
+    //自定义一个关注的监听事件
+    private LiveUserFollowListner liveUserFollowListner;
+
+    public LiveUserFollowListner getLiveUserFollowListner() {
+        return liveUserFollowListner;
+    }
+
+    public void setLiveUserFollowListner(LiveUserFollowListner liveUserFollowListner) {
+        this.liveUserFollowListner = liveUserFollowListner;
+    }
+
     public LiveUserAdapter(List<LiveUser> data) {
         super(R.layout.item_fragment_live_user, data);
     }
@@ -49,9 +60,13 @@ public class LiveUserAdapter extends BaseQuickAdapter<LiveUser, BaseViewHolder> 
         ((ToggleButton) viewHolder.getView(R.id.togglebutton_focus)).setOnToggleChanged(new ToggleButton.OnToggleChanged() {
             @Override
             public void onToggle(boolean on) {
-                RxBus.get().post(new FollowEvent(on, liveUser));
+                liveUserFollowListner.onFollow(on, liveUser);
             }
         });
         Glide.with(mContext).load(liveUser.getUserIconUrl()).crossFade().into((ImageView) viewHolder.getView(R.id.roundimage_roombackgroud));
+    }
+
+    public interface LiveUserFollowListner {
+        public void onFollow(boolean followStatus, LiveUser liveUser);
     }
 }

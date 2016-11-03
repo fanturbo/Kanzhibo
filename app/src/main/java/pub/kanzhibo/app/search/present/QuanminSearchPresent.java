@@ -19,6 +19,7 @@ import pub.kanzhibo.app.api.ApiClient;
 import pub.kanzhibo.app.api.RxSchedulers;
 import pub.kanzhibo.app.base.BaseSearchPresent;
 import pub.kanzhibo.app.gloabal.Constants;
+import pub.kanzhibo.app.model.PlatForm;
 import pub.kanzhibo.app.model.liveuser.LiveUser;
 import pub.kanzhibo.app.model.liveuser.LiveUserQuanmin;
 import pub.kanzhibo.app.model.liveuser.UserHuyaLive;
@@ -50,12 +51,14 @@ public class QuanminSearchPresent extends BaseSearchPresent {
                             List<LiveUserQuanmin.DataEntity.ItemsEntity> items = liveUserQuanmin.getData().getItems();
                             for (LiveUserQuanmin.DataEntity.ItemsEntity entity : items) {
                                 LiveUser liveUser = new LiveUser();
+                                liveUser.setUid(entity.getUid()+"");
+                                liveUser.setPlatform(PlatForm.QUANMIN);
                                 liveUser.setUserName(entity.getNick());
                                 //todo 应该查询本地数据库
                                 liveUser.setHasFocus(false);
                                 liveUser.setRoomTitle(entity.getTitle());
                                 liveUser.setUserIconUrl(entity.getAvatar());
-                                liveUser.setViewersCount("观看人数" + entity.getView());
+                                liveUser.setViewersCount("观看人数:" + entity.getView());
                                 liveUser.setStatus(entity.isPlay_status() ? "在直播" : "未开播");
                                 result.add(liveUser);
                             }

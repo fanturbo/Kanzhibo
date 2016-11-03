@@ -2,12 +2,7 @@ package pub.kanzhibo.app.login;
 
 
 import android.app.ProgressDialog;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,7 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.hannesdorfmann.mosby.mvp.MvpPresenter;
+import com.avos.avoscloud.AVUser;
 import com.hwangjr.rxbus.RxBus;
 
 import butterknife.BindView;
@@ -23,11 +18,8 @@ import butterknife.OnClick;
 import pub.kanzhibo.app.App;
 import pub.kanzhibo.app.R;
 import pub.kanzhibo.app.base.BaseFragment;
-import pub.kanzhibo.app.base.BaseLceFragment;
-import pub.kanzhibo.app.model.Login;
+import pub.kanzhibo.app.model.event.LoginEvent;
 import pub.kanzhibo.app.model.event.RegisterEvent;
-import pub.kanzhibo.app.register.RegisterPresenter;
-import pub.kanzhibo.app.register.RegisterView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -90,9 +82,10 @@ public class LoginFragment extends BaseFragment<LoginView, LoginPresenter> imple
     }
 
     @Override
-    public void loginSuccessful() {
+    public void loginSuccessful(AVUser user) {
         mProgressDialog.dismiss();
-        App.LogIn(true);
+        App.logIn();
+        RxBus.get().post(new LoginEvent(user));
         getActivity().finish();
     }
 }

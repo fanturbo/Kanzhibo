@@ -1,9 +1,6 @@
 package pub.kanzhibo.app.register;
 
 import com.hannesdorfmann.mosby.mvp.MvpView;
-import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
-
-import pub.kanzhibo.app.model.Login;
 
 /**
  * Created by turbo on 2016/11/2.

@@ -15,6 +15,7 @@ import pub.kanzhibo.app.api.ApiClient;
 import pub.kanzhibo.app.api.RxSchedulers;
 import pub.kanzhibo.app.base.BaseSearchPresent;
 import pub.kanzhibo.app.gloabal.Constants;
+import pub.kanzhibo.app.model.PlatForm;
 import pub.kanzhibo.app.model.liveuser.LiveUser;
 import pub.kanzhibo.app.model.liveuser.UserHuyaLive;
 import pub.kanzhibo.app.model.liveuser.UserHuyaPlay;
@@ -48,12 +49,14 @@ public class HuyaSearchPresent extends BaseSearchPresent {
                                 result = new ArrayList<LiveUser>();
                                 for (int i = 0; i < liveUserHuyas.length; i++) {
                                     LiveUser liveUser = new LiveUser();
+                                    liveUser.setUid(liveUserHuyas[i].getUid()+"");
+                                    liveUser.setPlatform(PlatForm.HUYA);
                                     liveUser.setUserName(liveUserHuyas[i].getGame_nick());
                                     //todo 应该查询本地数据库
                                     liveUser.setHasFocus(false);
                                     liveUser.setRoomTitle("查询不到相关信息");
                                     liveUser.setUserIconUrl(liveUserHuyas[i].getGame_avatarUrl52());
-                                    liveUser.setViewersCount("关注人数" + liveUserHuyas[i].getGame_activityCount());
+                                    liveUser.setViewersCount("关注人数:" + liveUserHuyas[i].getGame_activityCount());
                                     liveUser.setStatus(liveUserHuyas[i].isGameLiveOn() ? "在直播" : "未开播");
                                     result.add(liveUser);
                                 }
