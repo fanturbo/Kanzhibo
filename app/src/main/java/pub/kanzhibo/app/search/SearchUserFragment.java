@@ -1,9 +1,6 @@
 package pub.kanzhibo.app.search;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.Animatable;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -14,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.hwangjr.rxbus.RxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
@@ -24,32 +20,22 @@ import java.net.UnknownHostException;
 import java.util.List;
 
 import butterknife.BindView;
-import pub.kanzhibo.app.App;
 import pub.kanzhibo.app.R;
 import pub.kanzhibo.app.base.BaseLceFragment;
 import pub.kanzhibo.app.base.BaseSearchPresent;
-import pub.kanzhibo.app.common.CommonActivity;
-import pub.kanzhibo.app.common.widget.ToggleButton;
 import pub.kanzhibo.app.main.LiveUserAdapter;
 import pub.kanzhibo.app.model.PlatForm;
 import pub.kanzhibo.app.model.event.FollowEvent;
 import pub.kanzhibo.app.model.event.SearchEvent;
-import pub.kanzhibo.app.model.liveuser.LiveUser;
+import pub.kanzhibo.app.model.searchliveuser.LiveUser;
 import pub.kanzhibo.app.search.present.DouyuSearchPresent;
 import pub.kanzhibo.app.search.present.HuyaSearchPresent;
 import pub.kanzhibo.app.search.present.PandaSearchPresent;
 import pub.kanzhibo.app.search.present.QuanminSearchPresent;
 import pub.kanzhibo.app.search.present.ZhanqiSearchPresent;
-import pub.kanzhibo.app.util.DialogHelp;
-import pub.kanzhibo.app.util.SharedPreferencesUtils;
-import rx.Observable;
-import rx.Subscriber;
-import rx.functions.Action1;
 
 import static android.app.Activity.RESULT_OK;
 import static pub.kanzhibo.app.gloabal.Constants.Key.LOGIN_REQUEST_CODE;
-import static pub.kanzhibo.app.gloabal.Constants.Key.SAVE_WHERE;
-import static pub.kanzhibo.app.gloabal.Constants.Key.SELECT_SAVE_WHERE;
 
 /**
  * 搜索主播Fragment

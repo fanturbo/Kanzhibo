@@ -2,10 +2,11 @@ package pub.kanzhibo.app.api;
 
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
-import pub.kanzhibo.app.model.liveuser.LiveUserDouYu;
-import pub.kanzhibo.app.model.liveuser.LiveUserPanda;
-import pub.kanzhibo.app.model.liveuser.LiveUserQuanmin;
-import pub.kanzhibo.app.model.liveuser.LiveUserZhanqi;
+import pub.kanzhibo.app.model.roominfo.DouYuUserInfo;
+import pub.kanzhibo.app.model.searchliveuser.LiveUserDouYu;
+import pub.kanzhibo.app.model.searchliveuser.LiveUserPanda;
+import pub.kanzhibo.app.model.searchliveuser.LiveUserQuanmin;
+import pub.kanzhibo.app.model.searchliveuser.LiveUserZhanqi;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -78,7 +79,34 @@ public interface ILiveApi {
      * @param roomid
      * @return
      */
-    @GET("/api_room_v2?roomid=497942")
+    @GET("/api_room_v2")
     Observable<LiveUserPanda> getPandaRoomInfo(@Query("roomid") String roomid);
+
+    /**
+     * 获取斗鱼tv直播房间信息
+     *
+     * @param roomid
+     * @return
+     */
+    @GET("/api/RoomApi/room/{roomid}")
+    Observable<DouYuUserInfo> getDouyuRoomInfo(@Path("roomid") String roomid);
+
+    /**
+     * 获取熊猫tv直播房间信息
+     *
+     * @param roomid
+     * @return
+     */
+    @GET("/json/rooms/{roomid}/info.json")
+    Observable<LiveUserPanda> getQuanminRoomInfo(@Path("roomid") String roomid);
+
+    /**
+     * 获取战旗tv直播房间信息
+     *
+     * @param roomid
+     * @return
+     */
+    @GET("/api/static/live.roomid/{roomid}")
+    Observable<LiveUserPanda> getZhanqiRoomInfo(@Path("roomid") String roomid);
 
 }

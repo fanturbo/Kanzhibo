@@ -1,4 +1,4 @@
-package pub.kanzhibo.app.model.liveuser;
+package pub.kanzhibo.app.model.searchliveuser;
 
 /**
  * Created by snail on 16/10/30.

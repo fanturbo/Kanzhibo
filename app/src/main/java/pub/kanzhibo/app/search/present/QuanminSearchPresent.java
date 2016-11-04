@@ -1,29 +1,19 @@
 package pub.kanzhibo.app.search.present;
 
-import android.util.ArrayMap;
-
-import com.google.gson.Gson;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import pub.kanzhibo.app.api.ApiClient;
 import pub.kanzhibo.app.api.RxSchedulers;
 import pub.kanzhibo.app.base.BaseSearchPresent;
 import pub.kanzhibo.app.gloabal.Constants;
 import pub.kanzhibo.app.model.PlatForm;
-import pub.kanzhibo.app.model.liveuser.LiveUser;
-import pub.kanzhibo.app.model.liveuser.LiveUserQuanmin;
-import pub.kanzhibo.app.model.liveuser.UserHuyaLive;
-import pub.kanzhibo.app.model.liveuser.UserHuyaPlay;
+import pub.kanzhibo.app.model.searchliveuser.LiveUser;
+import pub.kanzhibo.app.model.searchliveuser.LiveUserQuanmin;
 import rx.functions.Func1;
 
 /**

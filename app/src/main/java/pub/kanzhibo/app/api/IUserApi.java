@@ -1,15 +1,7 @@
 package pub.kanzhibo.app.api;
 
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
-import pub.kanzhibo.app.model.liveuser.LiveUserDouYu;
-import pub.kanzhibo.app.model.liveuser.LiveUserPanda;
-import pub.kanzhibo.app.model.liveuser.LiveUserQuanmin;
-import pub.kanzhibo.app.model.liveuser.LiveUserZhanqi;
-import retrofit2.http.Body;
+import pub.kanzhibo.app.model.searchliveuser.LiveUserPanda;
 import retrofit2.http.GET;
-import retrofit2.http.POST;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
 

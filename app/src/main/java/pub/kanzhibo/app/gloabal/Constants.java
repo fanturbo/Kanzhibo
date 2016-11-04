@@ -5,6 +5,7 @@ package pub.kanzhibo.app.gloabal;
  */
 public interface Constants {
     String DOUYU_BASE_URL = "http://capi.douyucdn.cn";
+    String DOUYU_OPEN_BASE_URL = "http://open.douyucdn.cn";
     String HUYA_BASE_URL = "http://search.huya.com/";
     String QUANMIN_BASE_URL = "http://www.quanmin.tv/";
     String ZHANQI_BASE_URL = "http://www.zhanqi.tv/";

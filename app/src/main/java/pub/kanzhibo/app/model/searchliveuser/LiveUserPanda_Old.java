@@ -1,4 +1,4 @@
-package pub.kanzhibo.app.model.liveuser;
+package pub.kanzhibo.app.model.searchliveuser;
 
 import com.google.gson.annotations.SerializedName;
 

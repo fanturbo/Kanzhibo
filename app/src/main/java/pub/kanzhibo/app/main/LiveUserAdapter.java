@@ -1,30 +1,16 @@
 package pub.kanzhibo.app.main;
 
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.hwangjr.rxbus.RxBus;
-import com.sdsmdg.tastytoast.TastyToast;
 
-import java.util.Arrays;
 import java.util.List;
 
 import pub.kanzhibo.app.R;
 import pub.kanzhibo.app.common.widget.ToggleButton;
-import pub.kanzhibo.app.model.event.FollowEvent;
-import pub.kanzhibo.app.model.liveuser.LiveUser;
-import pub.kanzhibo.app.util.DialogHelp;
-import pub.kanzhibo.app.util.SharedPreferencesUtils;
-
-import static pub.kanzhibo.app.gloabal.Constants.Key.SAVE_WHERE;
-import static pub.kanzhibo.app.gloabal.Constants.Key.SELECT_SAVE_WHERE;
+import pub.kanzhibo.app.model.searchliveuser.LiveUser;
 
 /**
  * Created by turbo on 2016/10/28.

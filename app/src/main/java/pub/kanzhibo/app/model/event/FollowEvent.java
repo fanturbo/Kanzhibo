@@ -2,7 +2,7 @@ package pub.kanzhibo.app.model.event;
 
 import com.hwangjr.rxbus.annotation.Produce;
 
-import pub.kanzhibo.app.model.liveuser.LiveUser;
+import pub.kanzhibo.app.model.searchliveuser.LiveUser;
 
 /**
  * Created by turbo on 2016/10/31.

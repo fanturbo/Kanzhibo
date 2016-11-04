@@ -1,7 +1,5 @@
 package pub.kanzhibo.app.base;
 
-import android.content.DialogInterface;
-
 import com.avos.avoscloud.AVCloudQueryResult;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
@@ -9,36 +7,15 @@ import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVRelation;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.CloudQueryCallback;
-import com.avos.avoscloud.DeleteCallback;
 import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.SaveCallback;
-import com.google.gson.Gson;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.ResponseBody;
-import pub.kanzhibo.app.App;
-import pub.kanzhibo.app.api.ApiClient;
-import pub.kanzhibo.app.api.RxSchedulers;
-import pub.kanzhibo.app.gloabal.Constants;
-import pub.kanzhibo.app.model.liveuser.LiveUser;
-import pub.kanzhibo.app.model.liveuser.UserHuyaLive;
-import pub.kanzhibo.app.model.liveuser.UserHuyaPlay;
+import pub.kanzhibo.app.model.searchliveuser.LiveUser;
 import pub.kanzhibo.app.search.SearchView;
-import pub.kanzhibo.app.util.DialogHelp;
-import pub.kanzhibo.app.util.SharedPreferencesUtils;
 import rx.Subscriber;
 import rx.Subscription;
-import rx.functions.Func1;
-
-import static pub.kanzhibo.app.gloabal.Constants.Key.SAVE_WHERE;
-import static pub.kanzhibo.app.gloabal.Constants.Key.SELECT_SAVE_WHERE;
 
 /**
  * Created by snail on 16/10/30.

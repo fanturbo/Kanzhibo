@@ -16,10 +16,9 @@ import pub.kanzhibo.app.api.RxSchedulers;
 import pub.kanzhibo.app.base.BaseSearchPresent;
 import pub.kanzhibo.app.gloabal.Constants;
 import pub.kanzhibo.app.model.PlatForm;
-import pub.kanzhibo.app.model.liveuser.LiveUser;
-import pub.kanzhibo.app.model.liveuser.UserHuyaLive;
-import pub.kanzhibo.app.model.liveuser.UserHuyaPlay;
-import rx.Subscription;
+import pub.kanzhibo.app.model.searchliveuser.LiveUser;
+import pub.kanzhibo.app.model.searchliveuser.UserHuyaLive;
+import pub.kanzhibo.app.model.searchliveuser.UserHuyaPlay;
 import rx.functions.Func1;
 
 /**
