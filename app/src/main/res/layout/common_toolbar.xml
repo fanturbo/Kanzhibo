@@ -8,6 +8,8 @@
     android:elevation="8px"
     android:orientation="vertical"
     app:contentInsetStartWithNavigation="0dp"
+    android:background="?attr/colorPrimary"
+    app:popupTheme="@style/AppTheme.PopupOverlay"
     app:title="@string/app_name"
     tools:targetApi="lollipop">
 
@@ -41,6 +43,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
+                android:textSize="48px"
+                android:layout_marginLeft="20px"
+                android:textColor="@color/white"
                 android:text="关于" />
         </LinearLayout>
     </RelativeLayout>

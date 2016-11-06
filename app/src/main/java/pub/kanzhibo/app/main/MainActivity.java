@@ -39,6 +39,8 @@ import pub.kanzhibo.app.base.BaseActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pub.kanzhibo.app.common.CommonActivity;
+import pub.kanzhibo.app.common.WebViewActivity;
+import pub.kanzhibo.app.gloabal.Constants;
 import pub.kanzhibo.app.model.event.LoginEvent;
 import pub.kanzhibo.app.search.SearchActivity;
 import pub.kanzhibo.app.util.DialogHelp;
@@ -113,7 +115,6 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -152,6 +153,7 @@ public class MainActivity extends BaseActivity
                 startActivityForResult(intent, LOGIN_REQUEST_CODE);
             } else {
                 App.logOut();
+                RxBus.get().post(new LoginEvent(null));
             }
         } else if (id == R.id.nav_save_data) {
             final int index = Integer.parseInt(SharedPreferencesUtils.getString(App.context, SAVE_WHERE, "0"));
@@ -176,19 +178,29 @@ public class MainActivity extends BaseActivity
             });
         } else if (id == R.id.nav_feedback) {
             agent.startDefaultThreadActivity();
+        } else if(id == R.id.nav_about){
+            Intent intent = new Intent(this, WebViewActivity.class);
+            intent.putExtra(Constants.Key.WEB_TITLE,"关于");
+            intent.putExtra(Constants.Key.WEB_URL,"https://github.com/xturbofan");
+            startActivity(intent);
+        } else if(id == R.id.nav_setting){
+            TastyToast.makeText(this,"未完成此功能",0,3);
         }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        usernameTV = (TextView) drawer.findViewById(R.id.tv_username);
-        userIconIV = (ImageView) drawer.findViewById(R.id.iv_userIcon);
+        userIconIV = (ImageView) navigationView.findViewById(R.id.iv_userIcon);
+        usernameTV = (TextView) navigationView.findViewById(R.id.tv_username);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
     @Subscribe
     public void showUserInfo(LoginEvent loginEvent) {
-        //todo 设置item的title
-        Glide.with(this).load("").into(userIconIV);
-        usernameTV.setText(loginEvent.getUser().getUsername() + "");
+        if(loginEvent.getUser()!=null) {
+            Glide.with(this).load("").into(userIconIV);
+            usernameTV.setText(loginEvent.getUser().getUsername() + "");
+        }else{
+            userIconIV.setImageResource(R.mipmap.ic_launcher);
+            usernameTV.setText("");
+        }
     }
 
     @Override

@@ -15,11 +15,10 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme.NoActionBar">
         <activity
             android:name=".main.MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,8 +35,7 @@
 
         <activity android:name=".search.SearchActivity" />
         <activity
-            android:name=".common.CommonActivity"
-            android:theme="@style/AppTheme"></activity>
+            android:name=".common.CommonActivity"></activity>
         <activity android:name=".common.WebViewActivity"></activity>
         <activity android:name="com.avos.avoscloud.feedback.ThreadActivity"></activity>
     </application>

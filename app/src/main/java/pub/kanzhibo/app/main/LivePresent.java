@@ -57,7 +57,7 @@ public class LivePresent extends BaseRxLcePresenter<LiveView, List<LiveUser>> {
         });
     }
 
-    public void getFollow(boolean pullToRefresh) {
+    public void getFollow(boolean pullToRefresh,int page) {
         //查询关注的主播
         //根据uid和platform查出关注的主播的信息
         //合并查询到的所有的主播信息列表

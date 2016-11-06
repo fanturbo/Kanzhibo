@@ -17,19 +17,23 @@ import com.zhy.autolayout.AutoRelativeLayout;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import in.srain.cube.views.ptr.PtrDefaultHandler2;
+import in.srain.cube.views.ptr.PtrFrameLayout;
 import pub.kanzhibo.app.App;
 import pub.kanzhibo.app.R;
 import pub.kanzhibo.app.base.BaseLceFragment;
 import pub.kanzhibo.app.common.EmptyException;
+import pub.kanzhibo.app.common.widget.SwipeRefreshLoadMoreLayout;
 import pub.kanzhibo.app.model.searchliveuser.LiveUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * 关注的主播列表Fragment
  */
-public class LiveUserFragment extends BaseLceFragment<SwipeRefreshLayout, List<LiveUser>, LiveView, LivePresent>
-        implements LiveView, SwipeRefreshLayout.OnRefreshListener {
+public class LiveUserFragment extends BaseLceFragment<SwipeRefreshLoadMoreLayout, List<LiveUser>, LiveView, LivePresent>
+        implements LiveView, LiveUserAdapter.LiveUserFollowListner {
 
 
     @BindView(R.id.recyclerview)
@@ -41,6 +45,8 @@ public class LiveUserFragment extends BaseLceFragment<SwipeRefreshLayout, List<L
     ImageView emptyTipsIv;
     @BindView(R.id.tv_empty_tips)
     TextView emptyTipsTv;
+    private int mPageIndex;
+    private ArrayList<LiveUser> mLiveUserList;
 
     @Override
     protected int getLayoutRes() {
@@ -51,7 +57,19 @@ public class LiveUserFragment extends BaseLceFragment<SwipeRefreshLayout, List<L
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        contentView.setOnRefreshListener(this);
+        contentView.setPtrHandler(new PtrDefaultHandler2() {
+            @Override
+            public void onLoadMoreBegin(PtrFrameLayout ptrFrameLayout) {
+                mPageIndex++;
+                loadData(true);
+            }
+
+            @Override
+            public void onRefreshBegin(PtrFrameLayout ptrFrameLayout) {
+                mPageIndex = 1;
+                loadData(true);
+            }
+        });
         RxBus.get().register(this);
         AnimationDrawable frameAnim = (AnimationDrawable) getResources().getDrawable(R.drawable.empty_bike);
         emptyTipsIv.setBackgroundDrawable(frameAnim);
@@ -66,8 +84,15 @@ public class LiveUserFragment extends BaseLceFragment<SwipeRefreshLayout, List<L
 
     @Override
     public void setData(List<LiveUser> data) {
-        liveUserAdapter = new LiveUserAdapter(data);
-        recyclerView.setAdapter(liveUserAdapter);
+        if(liveUserAdapter==null) {
+            mLiveUserList = new ArrayList<>();
+            mLiveUserList.addAll(data);
+            liveUserAdapter = new LiveUserAdapter(mLiveUserList);
+            liveUserAdapter.setLiveUserFollowListner(this);
+            recyclerView.setAdapter(liveUserAdapter);
+        }else{
+            mLiveUserList.addAll(data);
+        }
         liveUserAdapter.notifyDataSetChanged();
     }
 
@@ -75,7 +100,13 @@ public class LiveUserFragment extends BaseLceFragment<SwipeRefreshLayout, List<L
     public void loadData(boolean pullToRefresh) {
         if (App.isLogIn()) {
             defaultSearchRelative.setVisibility(View.GONE);
-            presenter.getFollow(pullToRefresh);
+            contentView.post(new Runnable() {
+                @Override
+                public void run() {
+                    contentView.autoRefresh();
+                }
+            });
+            presenter.getFollow(pullToRefresh,mPageIndex);
         } else {
             emptyTipsTv.setText("这个页面展示的是关注的主播列表，如果不需要登录点击自行车");
         }
@@ -83,7 +114,7 @@ public class LiveUserFragment extends BaseLceFragment<SwipeRefreshLayout, List<L
 
     @OnClick(R.id.iv_empty_tips)
     public void clickEmpty() {
-        presenter.getFollow(false);
+        presenter.getFollow(false,mPageIndex);
     }
 
     @Override
@@ -96,15 +127,9 @@ public class LiveUserFragment extends BaseLceFragment<SwipeRefreshLayout, List<L
         return new LivePresent();
     }
 
-    //刷新
-    @Override
-    public void onRefresh() {
-        loadData(true);
-    }
-
     @Override
     public void stopRefresh() {
-        contentView.setRefreshing(false);
+        contentView.refreshComplete();
     }
 
     @Override
@@ -115,7 +140,9 @@ public class LiveUserFragment extends BaseLceFragment<SwipeRefreshLayout, List<L
 
     @Override
     public void showLoading(boolean pullToRefresh) {
-        super.showLoading(pullToRefresh);
+        if (!pullToRefresh) {
+            super.showLoading(pullToRefresh);
+        }
     }
 
     @Override
@@ -144,5 +171,10 @@ public class LiveUserFragment extends BaseLceFragment<SwipeRefreshLayout, List<L
     public void onDestroyView() {
         super.onDestroyView();
         RxBus.get().unregister(this);
+    }
+
+    @Override
+    public void onFollow(boolean followStatus, LiveUser liveUser) {
+        presenter.followLive(followStatus, liveUser);
     }
 }

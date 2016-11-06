@@ -17,12 +17,16 @@ import com.hwangjr.rxbus.annotation.Subscribe;
 import com.zhy.autolayout.AutoRelativeLayout;
 
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import in.srain.cube.views.ptr.PtrDefaultHandler2;
+import in.srain.cube.views.ptr.PtrFrameLayout;
 import pub.kanzhibo.app.R;
 import pub.kanzhibo.app.base.BaseLceFragment;
 import pub.kanzhibo.app.base.BaseSearchPresent;
+import pub.kanzhibo.app.common.widget.SwipeRefreshLoadMoreLayout;
 import pub.kanzhibo.app.main.LiveUserAdapter;
 import pub.kanzhibo.app.model.PlatForm;
 import pub.kanzhibo.app.model.event.FollowEvent;
@@ -40,8 +44,8 @@ import static pub.kanzhibo.app.gloabal.Constants.Key.LOGIN_REQUEST_CODE;
 /**
  * 搜索主播Fragment
  */
-public class SearchUserFragment extends BaseLceFragment<SwipeRefreshLayout, List<LiveUser>, SearchView, BaseSearchPresent>
-        implements SearchView, SwipeRefreshLayout.OnRefreshListener, LiveUserAdapter.LiveUserFollowListner {
+public class SearchUserFragment extends BaseLceFragment<SwipeRefreshLoadMoreLayout, List<LiveUser>, SearchView, BaseSearchPresent>
+        implements SearchView, LiveUserAdapter.LiveUserFollowListner {
 
 
     @BindView(R.id.recyclerview)
@@ -58,6 +62,8 @@ public class SearchUserFragment extends BaseLceFragment<SwipeRefreshLayout, List
     private LiveUserAdapter liveUserAdapter;
     private PlatForm mPlatForm;
     private String mSearchKey;
+    private int mPageIndex;
+    private List<LiveUser> mLiveUserList;
 
     @Override
     protected int getLayoutRes() {
@@ -76,15 +82,33 @@ public class SearchUserFragment extends BaseLceFragment<SwipeRefreshLayout, List
                 //todo 使用webview播放视频
             }
         });
-        contentView.setOnRefreshListener(this);
+        contentView.setPtrHandler(new PtrDefaultHandler2() {
+            @Override
+            public void onLoadMoreBegin(PtrFrameLayout ptrFrameLayout) {
+                mPageIndex++;
+                loadData(true);
+            }
+
+            @Override
+            public void onRefreshBegin(PtrFrameLayout ptrFrameLayout) {
+                mPageIndex = 1;
+                loadData(true);
+            }
+        });
         emptyTipsTv.setText("还木有进行搜索");
     }
 
     @Override
     public void setData(List<LiveUser> data) {
-        liveUserAdapter = new LiveUserAdapter(data);
-        liveUserAdapter.setLiveUserFollowListner(this);
-        recyclerView.setAdapter(liveUserAdapter);
+        if(liveUserAdapter==null) {
+            mLiveUserList = new ArrayList<>();
+            mLiveUserList.addAll(data);
+            liveUserAdapter = new LiveUserAdapter(mLiveUserList);
+            liveUserAdapter.setLiveUserFollowListner(this);
+            recyclerView.setAdapter(liveUserAdapter);
+        }else{
+            mLiveUserList.addAll(data);
+        }
         liveUserAdapter.notifyDataSetChanged();
     }
 
@@ -93,7 +117,13 @@ public class SearchUserFragment extends BaseLceFragment<SwipeRefreshLayout, List
         //显示空界面
         if (!pullToRefresh)
             defaultSearchRelative.setVisibility(View.VISIBLE);
-        presenter.searchUser(false, mSearchKey, 0);
+        contentView.post(new Runnable() {
+            @Override
+            public void run() {
+                contentView.autoRefresh();
+            }
+        });
+        presenter.searchUser(pullToRefresh, mSearchKey, mPageIndex);
     }
 
     @Override
@@ -121,15 +151,9 @@ public class SearchUserFragment extends BaseLceFragment<SwipeRefreshLayout, List
         }
     }
 
-    //刷新
-    @Override
-    public void onRefresh() {
-        loadData(true);
-    }
-
     @Override
     public void stopRefresh() {
-        contentView.setRefreshing(false);
+        contentView.refreshComplete();
     }
 
     @Override
@@ -140,7 +164,9 @@ public class SearchUserFragment extends BaseLceFragment<SwipeRefreshLayout, List
 
     @Override
     public void showLoading(boolean pullToRefresh) {
-        super.showLoading(pullToRefresh);
+        if (!pullToRefresh) {
+            super.showLoading(pullToRefresh);
+        }
     }
 
     @Override
@@ -165,7 +191,7 @@ public class SearchUserFragment extends BaseLceFragment<SwipeRefreshLayout, List
         //todo 确保每个平台的page都是从0开始的
         defaultSearchRelative.setVisibility(View.GONE);
         mSearchKey = searchEvent.getSearchKey();
-        presenter.searchUser(false, mSearchKey, 0);
+        presenter.searchUser(false, mSearchKey, mPageIndex);
     }
 
     @Subscribe
