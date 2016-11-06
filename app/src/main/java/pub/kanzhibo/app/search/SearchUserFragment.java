@@ -78,7 +78,6 @@ public class SearchUserFragment extends BaseLceFragment<SwipeRefreshLayout, List
         });
         contentView.setOnRefreshListener(this);
         emptyTipsTv.setText("还木有进行搜索");
-        loadData(false);
     }
 
     @Override

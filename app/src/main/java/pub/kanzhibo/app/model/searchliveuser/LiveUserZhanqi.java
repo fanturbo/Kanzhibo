@@ -240,7 +240,7 @@ public class LiveUserZhanqi {
 
         public static class DocTagEntity {
             private String online;
-            private int follows;
+            private Object follows;
             private String gender;
 
             public String getOnline() {
@@ -251,11 +251,11 @@ public class LiveUserZhanqi {
                 this.online = online;
             }
 
-            public int getFollows() {
+            public Object getFollows() {
                 return follows;
             }
 
-            public void setFollows(int follows) {
+            public void setFollows(Object follows) {
                 this.follows = follows;
             }
 

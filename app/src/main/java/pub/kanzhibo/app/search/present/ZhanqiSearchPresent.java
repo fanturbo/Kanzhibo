@@ -29,9 +29,9 @@ public class ZhanqiSearchPresent extends BaseSearchPresent {
                         if (liveUserZhanqi.getCode() == 0 && liveUserZhanqi.getData() != null && liveUserZhanqi.getData().size() > 0) {
                             for (LiveUserZhanqi.DataEntity entity : liveUserZhanqi.getData()) {
                                 LiveUser liveUser = new LiveUser();
-                                liveUser.setUid(entity.getId());
+                                liveUser.setUid(entity.getId().replace("room-",""));
                                 liveUser.setPlatform(PlatForm.ZHANQI);
-                                liveUser.setUserName(entity.getNickname());
+                                liveUser.setUserName(entity.getNickname().replace("<em>","").replace("</em>",""));
                                 //todo 应该查询本地数据库
                                 liveUser.setHasFocus(false);
                                 liveUser.setRoomTitle(entity.getTitle());
