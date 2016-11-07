@@ -25,6 +25,7 @@ import pub.kanzhibo.app.api.RxSchedulers;
 import pub.kanzhibo.app.base.BaseRxLcePresenter;
 import pub.kanzhibo.app.common.EmptyException;
 import pub.kanzhibo.app.gloabal.Constants;
+import pub.kanzhibo.app.model.DouyuBigData;
 import pub.kanzhibo.app.model.PlatForm;
 import pub.kanzhibo.app.model.roominfo.DouYuUserInfo;
 import pub.kanzhibo.app.model.roominfo.PandaUserInfo;
@@ -57,7 +58,7 @@ public class LivePresent extends BaseRxLcePresenter<LiveView, List<LiveUser>> {
         });
     }
 
-    public void getFollow(boolean pullToRefresh,int page) {
+    public void getFollow(boolean pullToRefresh, int page) {
         //查询关注的主播
         //根据uid和platform查出关注的主播的信息
         //合并查询到的所有的主播信息列表
@@ -196,7 +197,33 @@ public class LivePresent extends BaseRxLcePresenter<LiveView, List<LiveUser>> {
             });
         } else {
             //todo 未登录状态下展示热门的主播列表
+            ApiClient.getInstance()
+                    .getLiveApi(Constants.DOUYU_BASE_URL)
+                    .getBigData()
+                    .map(new Func1<DouyuBigData, List<LiveUser>>() {
+                        @Override
+                        public List<LiveUser> call(DouyuBigData zhanqiUserInfo) {
+                            List<DouyuBigData.DataEntity> entityList = zhanqiUserInfo.getData();
+                            List<LiveUser> liveUsers = new ArrayList<>();
+                            for (DouyuBigData.DataEntity entity : entityList) {
+                                LiveUser liveUser = new LiveUser();
+                                liveUser.setUserName(entity.getNickname());
+                                liveUser.setUid(entity.getOwner_uid());
+                                liveUser.setPlatform(PlatForm.DOUYU);
+                                liveUser.setHasFocus(false);
+                                liveUser.setRoomTitle(entity.getRoom_name());
+                                liveUser.setUserIconUrl(entity.getAvatar_small());
+                                liveUser.setViewersCount("关注人数:" + entity.getOnline());
+                                liveUser.setStatus("在直播");
+                                liveUsers.add(liveUser);
+                            }
+                            return liveUsers;
+                        }
+                    })
+                    .compose(RxSchedulers.<List<LiveUser>>applySchedulers())
+                    .subscribe(getSubscriber());
         }
+
     }
 
     public Subscriber<List<LiveUser>> getSubscriber() {

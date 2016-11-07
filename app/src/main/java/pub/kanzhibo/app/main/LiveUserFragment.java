@@ -97,6 +97,10 @@ public class LiveUserFragment extends BaseLceFragment<SwipeRefreshLoadMoreLayout
 
     @OnClick(R.id.iv_empty_tips)
     public void clickEmpty() {
+        defaultSearchRelative.setVisibility(View.GONE);
+        mPageIndex = 0;
+        if (mLiveUserList != null)
+            mLiveUserList.clear();
         presenter.getFollow(false, mPageIndex);
     }
 

@@ -2,6 +2,7 @@ package pub.kanzhibo.app.api;
 
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
+import pub.kanzhibo.app.model.DouyuBigData;
 import pub.kanzhibo.app.model.roominfo.DouYuUserInfo;
 import pub.kanzhibo.app.model.roominfo.PandaUserInfo;
 import pub.kanzhibo.app.model.roominfo.ZhanqiUserInfo;
@@ -110,5 +111,13 @@ public interface ILiveApi {
      */
     @GET("/api/static/live.roomid/{roomid}")
     Observable<ZhanqiUserInfo> getZhanqiRoomInfo(@Path("roomid") String roomid);
+
+    /**
+     * 获取战旗tv直播房间信息
+     *
+     * @return
+     */
+    @GET("/api/v1/getbigDataRoom")
+    Observable<DouyuBigData> getBigData();
 
 }
