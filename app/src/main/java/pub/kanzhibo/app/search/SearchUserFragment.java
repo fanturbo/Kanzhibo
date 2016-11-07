@@ -86,7 +86,7 @@ public class SearchUserFragment extends BaseLceFragment<SwipeRefreshLoadMoreLayo
             @Override
             public void onLoadMoreBegin(PtrFrameLayout ptrFrameLayout) {
                 mPageIndex++;
-                loadData(true);
+                presenter.searchUser(true, mSearchKey, mPageIndex);
             }
 
             @Override
@@ -100,13 +100,13 @@ public class SearchUserFragment extends BaseLceFragment<SwipeRefreshLoadMoreLayo
 
     @Override
     public void setData(List<LiveUser> data) {
-        if(liveUserAdapter==null) {
+        if (liveUserAdapter == null) {
             mLiveUserList = new ArrayList<>();
             mLiveUserList.addAll(data);
             liveUserAdapter = new LiveUserAdapter(mLiveUserList);
             liveUserAdapter.setLiveUserFollowListner(this);
             recyclerView.setAdapter(liveUserAdapter);
-        }else{
+        } else {
             mLiveUserList.addAll(data);
         }
         liveUserAdapter.notifyDataSetChanged();
@@ -115,14 +115,14 @@ public class SearchUserFragment extends BaseLceFragment<SwipeRefreshLoadMoreLayo
     @Override
     public void loadData(boolean pullToRefresh) {
         //显示空界面
-        if (!pullToRefresh)
+        if (!pullToRefresh) {
             defaultSearchRelative.setVisibility(View.VISIBLE);
-        contentView.post(new Runnable() {
-            @Override
-            public void run() {
-                contentView.autoRefresh();
-            }
-        });
+        } else {
+            mPageIndex = 0;
+            if (mLiveUserList != null)
+                mLiveUserList.clear();
+            liveUserAdapter = null;
+        }
         presenter.searchUser(pullToRefresh, mSearchKey, mPageIndex);
     }
 
@@ -191,14 +191,11 @@ public class SearchUserFragment extends BaseLceFragment<SwipeRefreshLoadMoreLayo
         //todo 确保每个平台的page都是从0开始的
         defaultSearchRelative.setVisibility(View.GONE);
         mSearchKey = searchEvent.getSearchKey();
+        mPageIndex = 0;
+        if (mLiveUserList != null) {
+            mLiveUserList.clear();
+        }
         presenter.searchUser(false, mSearchKey, mPageIndex);
-    }
-
-    @Subscribe
-    public void followUser(final FollowEvent followEvent) {
-        //5个列表重用的同一个Fragment，所以当通知fragment执行关注操作时，会通知5个SearchUserFragment对象
-        //所以用platform做了区分
-
     }
 
     @Override
