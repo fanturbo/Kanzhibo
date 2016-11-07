@@ -94,7 +94,7 @@ public class LivePresent extends BaseRxLcePresenter<LiveView, List<LiveUser>> {
                                                                 liveUser.setUserName(entity.getOwner_name());
                                                                 liveUser.setUid(entity.getRoom_id());
                                                                 liveUser.setPlatform(PlatForm.DOUYU);
-                                                                liveUser.setHasFocus(false);
+                                                                liveUser.setHasFocus(true);
                                                                 liveUser.setRoomTitle(entity.getRoom_name());
                                                                 liveUser.setUserIconUrl(entity.getAvatar());
                                                                 liveUser.setViewersCount("关注人数:" + entity.getFans_num());
@@ -118,7 +118,7 @@ public class LivePresent extends BaseRxLcePresenter<LiveView, List<LiveUser>> {
                                                                 liveUser.setUserName(entity.getNickname());
                                                                 liveUser.setUid(entity.getId());
                                                                 liveUser.setPlatform(PlatForm.ZHANQI);
-                                                                liveUser.setHasFocus(false);
+                                                                liveUser.setHasFocus(true);
                                                                 liveUser.setRoomTitle(entity.getTitle());
                                                                 liveUser.setUserIconUrl(entity.getAvatar());
                                                                 liveUser.setViewersCount("关注人数:" + entity.getFollows());
@@ -143,7 +143,7 @@ public class LivePresent extends BaseRxLcePresenter<LiveView, List<LiveUser>> {
                                                                 liveUser.setUserName(pandaUserInfo.getData().getInfo().getHostinfo().getName());
                                                                 liveUser.setUid(entity.getId());
                                                                 liveUser.setPlatform(PlatForm.PANDA);
-                                                                liveUser.setHasFocus(false);
+                                                                liveUser.setHasFocus(true);
                                                                 liveUser.setRoomTitle(entity.getName());
                                                                 liveUser.setUserIconUrl(pandaUserInfo.getData().getInfo().getHostinfo().getAvatar());
                                                                 liveUser.setViewersCount("观看人数:" + entity.getPerson_num());

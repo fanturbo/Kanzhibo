@@ -42,7 +42,9 @@ public class LiveUserAdapter extends BaseQuickAdapter<LiveUser, BaseViewHolder> 
                 .setText(R.id.tv_roomtitle, liveUser.getRoomTitle())
                 .setText(R.id.tv_viewercount, liveUser.getViewersCount())
                 .setText(R.id.tv_live_status, liveUser.getStatus());
-
+        if (liveUser.isHasFocus()) {
+            ((ToggleButton) viewHolder.getView(R.id.togglebutton_focus)).setToggleOn();
+        }
         ((ToggleButton) viewHolder.getView(R.id.togglebutton_focus)).setOnToggleChanged(new ToggleButton.OnToggleChanged() {
             @Override
             public void onToggle(boolean on) {
