@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.TextView;
@@ -25,7 +26,6 @@ import pub.kanzhibo.app.model.event.RegisterEvent;
 import pub.kanzhibo.app.register.RegisterFragment;
 
 public class CommonActivity extends BaseActivity {
-    //todo toolbar去哪里了？
     private SparseArray<BaseFragment> fragmentList;
     @BindView(R.id.tv_title)
     TextView mTitleTV;

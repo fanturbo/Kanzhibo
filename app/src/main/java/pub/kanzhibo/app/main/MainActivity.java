@@ -2,13 +2,10 @@ package pub.kanzhibo.app.main;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -58,14 +55,15 @@ public class MainActivity extends BaseActivity
     @BindView(R.id.fab)
     FloatingActionButton mFloatingActionButton;
     @BindView(R.id.drawer_layout)
-    DrawerLayout drawer;
+    DrawerLayout mDrawerLayout;
     @BindView(R.id.nav_view)
-    NavigationView navigationView;
+    NavigationView mNavigationView;
     @BindView(R.id.frame_main_content)
-    FrameLayout frameMainContent;
-    TextView usernameTV;
-    ImageView userIconIV;
-    FeedbackAgent agent;
+    FrameLayout mFrameMainContent;
+    TextView mUsernameTV;
+    ImageView mUserIconIV;
+    FeedbackAgent mAgent;
+    private MenuItem mLoginMenuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,16 +78,15 @@ public class MainActivity extends BaseActivity
     }
 
     private void initFeedBack() {
-        agent = new FeedbackAgent(this);
-        agent.getDefaultThread().sync(new FeedbackThread.SyncCallback() {
+        mAgent = new FeedbackAgent(this);
+        mAgent.getDefaultThread().sync(new FeedbackThread.SyncCallback() {
             @Override
             public void onCommentsSend(List<Comment> list, AVException e) {
             }
 
             @Override
             public void onCommentsFetch(List<Comment> list, AVException e) {
-                //todo啥时候调用这个啊，已经看了，为啥还是老是出来
-                TastyToast.makeText(MainActivity.this, "开发者回复了你的反馈", 1, 3);
+//                TastyToast.makeText(MainActivity.this, "开发者回复了你的反馈", 1, 1);
             }
         });
     }
@@ -104,10 +101,10 @@ public class MainActivity extends BaseActivity
         });
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, mToolBar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+                this, mDrawerLayout, mToolBar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawerLayout.setDrawerListener(toggle);
         toggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
+        mNavigationView.setNavigationItemSelectedListener(this);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frame_main_content, new LiveUserFragment());
         fragmentTransaction.commit();
@@ -115,8 +112,8 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
@@ -147,6 +144,7 @@ public class MainActivity extends BaseActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         if (id == R.id.nav_login) {
+            mLoginMenuItem = item;
             if (!App.isLogIn()) {
                 Intent intent = new Intent(this, CommonActivity.class);
                 intent.putExtra("Fragment", "login");
@@ -177,29 +175,31 @@ public class MainActivity extends BaseActivity
                 }
             });
         } else if (id == R.id.nav_feedback) {
-            agent.startDefaultThreadActivity();
-        } else if(id == R.id.nav_about){
+            mAgent.startDefaultThreadActivity();
+        } else if (id == R.id.nav_about) {
             Intent intent = new Intent(this, WebViewActivity.class);
-            intent.putExtra(Constants.Key.WEB_TITLE,"关于");
-            intent.putExtra(Constants.Key.WEB_URL,"https://github.com/xturbofan");
+            intent.putExtra(Constants.Key.WEB_TITLE, "关于");
+            intent.putExtra(Constants.Key.WEB_URL, "https://github.com/xturbofan");
             startActivity(intent);
-        } else if(id == R.id.nav_setting){
-            TastyToast.makeText(this,"未完成此功能",0,3);
+        } else if (id == R.id.nav_setting) {
+            TastyToast.makeText(this, "未完成此功能", 0, 3);
         }
-        userIconIV = (ImageView) navigationView.findViewById(R.id.iv_userIcon);
-        usernameTV = (TextView) navigationView.findViewById(R.id.tv_username);
-        drawer.closeDrawer(GravityCompat.START);
+        mUserIconIV = (ImageView) mNavigationView.findViewById(R.id.iv_userIcon);
+        mUsernameTV = (TextView) mNavigationView.findViewById(R.id.tv_username);
+        mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
     @Subscribe
     public void showUserInfo(LoginEvent loginEvent) {
-        if(loginEvent.getUser()!=null) {
-            Glide.with(this).load("").into(userIconIV);
-            usernameTV.setText(loginEvent.getUser().getUsername() + "");
-        }else{
-            userIconIV.setImageResource(R.mipmap.ic_launcher);
-            usernameTV.setText("");
+        if (loginEvent.getUser() != null) {
+            mLoginMenuItem.setTitle("退出登录");
+            Glide.with(this).load("https://unsplash.it/200/200/?random").into(mUserIconIV);
+            mUsernameTV.setText(loginEvent.getUser().getUsername() + "");
+        } else {
+            mLoginMenuItem.setTitle("登录");
+            mUserIconIV.setImageResource(R.mipmap.ic_launcher);
+            mUsernameTV.setText("未登录");
         }
     }
 

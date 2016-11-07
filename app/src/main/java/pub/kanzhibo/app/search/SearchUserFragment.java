@@ -91,7 +91,7 @@ public class SearchUserFragment extends BaseLceFragment<SwipeRefreshLoadMoreLayo
 
             @Override
             public void onRefreshBegin(PtrFrameLayout ptrFrameLayout) {
-                mPageIndex = 1;
+                mPageIndex = 0;
                 loadData(true);
             }
         });

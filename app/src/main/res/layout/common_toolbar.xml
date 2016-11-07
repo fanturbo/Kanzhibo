@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/toolBar"
@@ -18,7 +18,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:visibility="gone"
         tools:visibility="visible">
 
         <ImageButton
@@ -43,10 +42,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:textSize="48px"
+                android:textSize="44px"
                 android:layout_marginLeft="20px"
                 android:textColor="@color/white"
                 android:text="关于" />
         </LinearLayout>
     </RelativeLayout>
-</android.support.v7.widget.Toolbar>
+</LinearLayout>

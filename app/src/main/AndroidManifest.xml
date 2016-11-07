@@ -35,9 +35,14 @@
 
         <activity android:name=".search.SearchActivity" />
         <activity
-            android:name=".common.CommonActivity"></activity>
-        <activity android:name=".common.WebViewActivity"></activity>
-        <activity android:name="com.avos.avoscloud.feedback.ThreadActivity"></activity>
+            android:name=".common.CommonActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".common.WebViewActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.avos.avoscloud.feedback.ThreadActivity"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>
