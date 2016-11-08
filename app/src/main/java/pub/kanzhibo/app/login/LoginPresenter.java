@@ -15,8 +15,11 @@ public class LoginPresenter extends MvpBasePresenter<LoginView> {
         AVUser.logInInBackground(email, password, new LogInCallback<AVUser>() {
             @Override
             public void done(AVUser avUser, AVException e) {
-                if (avUser != null)
+                if (avUser != null) {
                     getView().loginSuccessful(avUser);
+                }else{
+                    getView().showError("登陆失败,请检查用户名或者密码");
+                }
             }
         });
     }

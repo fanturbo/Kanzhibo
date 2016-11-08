@@ -175,6 +175,8 @@ public class LiveUserFragment extends BaseLceFragment<SwipeRefreshLoadMoreLayout
     public void getFollow(LoginEvent loginEvent) {
         if (loginEvent.getUser() != null) {
             loadData(false);
+        }else{
+            defaultSearchRelative.setVisibility(View.VISIBLE);
         }
     }
 }
