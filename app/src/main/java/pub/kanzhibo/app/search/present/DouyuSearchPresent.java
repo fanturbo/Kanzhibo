@@ -6,7 +6,7 @@ import java.util.List;
 import pub.kanzhibo.app.api.ApiClient;
 import pub.kanzhibo.app.api.RxSchedulers;
 import pub.kanzhibo.app.base.BaseSearchPresent;
-import pub.kanzhibo.app.gloabal.Constants;
+import pub.kanzhibo.app.global.Constants;
 import pub.kanzhibo.app.model.PlatForm;
 import pub.kanzhibo.app.model.searchliveuser.LiveUser;
 import pub.kanzhibo.app.model.searchliveuser.LiveUserDouYu;

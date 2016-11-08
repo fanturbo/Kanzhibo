@@ -3,7 +3,6 @@ package pub.kanzhibo.app.search;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -29,7 +28,6 @@ import pub.kanzhibo.app.base.BaseSearchPresent;
 import pub.kanzhibo.app.common.widget.SwipeRefreshLoadMoreLayout;
 import pub.kanzhibo.app.main.LiveUserAdapter;
 import pub.kanzhibo.app.model.PlatForm;
-import pub.kanzhibo.app.model.event.FollowEvent;
 import pub.kanzhibo.app.model.event.SearchEvent;
 import pub.kanzhibo.app.model.searchliveuser.LiveUser;
 import pub.kanzhibo.app.search.present.DouyuSearchPresent;
@@ -39,7 +37,7 @@ import pub.kanzhibo.app.search.present.QuanminSearchPresent;
 import pub.kanzhibo.app.search.present.ZhanqiSearchPresent;
 
 import static android.app.Activity.RESULT_OK;
-import static pub.kanzhibo.app.gloabal.Constants.Key.LOGIN_REQUEST_CODE;
+import static pub.kanzhibo.app.global.Constants.Key.LOGIN_REQUEST_CODE;
 
 /**
  * 搜索主播Fragment

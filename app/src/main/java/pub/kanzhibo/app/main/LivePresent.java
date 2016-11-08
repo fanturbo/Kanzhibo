@@ -1,7 +1,5 @@
 package pub.kanzhibo.app.main;
 
-import android.util.Log;
-
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
@@ -9,7 +7,6 @@ import com.avos.avoscloud.AVRelation;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.SaveCallback;
-import com.sdsmdg.tastytoast.TastyToast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,20 +20,17 @@ import pub.kanzhibo.app.App;
 import pub.kanzhibo.app.api.ApiClient;
 import pub.kanzhibo.app.api.RxSchedulers;
 import pub.kanzhibo.app.base.BaseRxLcePresenter;
-import pub.kanzhibo.app.common.EmptyException;
-import pub.kanzhibo.app.gloabal.Constants;
+import pub.kanzhibo.app.global.Constants;
 import pub.kanzhibo.app.model.DouyuBigData;
 import pub.kanzhibo.app.model.PlatForm;
 import pub.kanzhibo.app.model.roominfo.DouYuUserInfo;
 import pub.kanzhibo.app.model.roominfo.PandaUserInfo;
 import pub.kanzhibo.app.model.roominfo.ZhanqiUserInfo;
 import pub.kanzhibo.app.model.searchliveuser.LiveUser;
-import pub.kanzhibo.app.model.searchliveuser.LiveUserPanda;
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Action1;
 import rx.functions.Func1;
-import rx.subjects.Subject;
 
 /**
  * Created by snail on 16/10/30.

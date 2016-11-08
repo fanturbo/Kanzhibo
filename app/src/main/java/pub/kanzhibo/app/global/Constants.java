@@ -1,4 +1,4 @@
-package pub.kanzhibo.app.gloabal;
+package pub.kanzhibo.app.global;
 
 /**
  * Created by snail on 16/10/30.

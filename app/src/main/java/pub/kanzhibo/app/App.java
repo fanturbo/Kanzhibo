@@ -4,13 +4,12 @@ import android.app.Application;
 import android.content.Context;
 
 import com.avos.avoscloud.AVOSCloud;
-import com.avos.avoscloud.AVObject;
 
 import com.tencent.bugly.crashreport.CrashReport;
 
 import pub.kanzhibo.app.util.SharedPreferencesUtils;
 
-import static pub.kanzhibo.app.gloabal.Constants.Key.ISLOGIN;
+import static pub.kanzhibo.app.global.Constants.Key.ISLOGIN;
 
 public class App extends Application {
 

@@ -37,15 +37,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import pub.kanzhibo.app.common.CommonActivity;
 import pub.kanzhibo.app.common.WebViewActivity;
-import pub.kanzhibo.app.gloabal.Constants;
+import pub.kanzhibo.app.global.Constants;
 import pub.kanzhibo.app.model.event.LoginEvent;
 import pub.kanzhibo.app.search.SearchActivity;
 import pub.kanzhibo.app.util.DialogHelp;
 import pub.kanzhibo.app.util.SharedPreferencesUtils;
 
-import static pub.kanzhibo.app.gloabal.Constants.Key.LOGIN_REQUEST_CODE;
-import static pub.kanzhibo.app.gloabal.Constants.Key.SAVE_WHERE;
-import static pub.kanzhibo.app.gloabal.Constants.Key.SELECT_SAVE_WHERE;
+import static pub.kanzhibo.app.global.Constants.Key.LOGIN_REQUEST_CODE;
+import static pub.kanzhibo.app.global.Constants.Key.SAVE_WHERE;
+import static pub.kanzhibo.app.global.Constants.Key.SELECT_SAVE_WHERE;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {

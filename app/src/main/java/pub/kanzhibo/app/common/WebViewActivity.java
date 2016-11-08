@@ -19,7 +19,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -32,7 +31,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pub.kanzhibo.app.R;
 import pub.kanzhibo.app.base.BaseActivity;
-import pub.kanzhibo.app.gloabal.Constants;
+import pub.kanzhibo.app.global.Constants;
 
 /**
  * 通用的WebViewActivity

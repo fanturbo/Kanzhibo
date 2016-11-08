@@ -1,14 +1,13 @@
 package pub.kanzhibo.app.util;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.text.TextUtils;
-import static pub.kanzhibo.app.gloabal.Constants.Key.SELECT_SAVE_WHERE;
+
+import static pub.kanzhibo.app.global.Constants.Key.SELECT_SAVE_WHERE;
 
 /**
  * 对话框辅助类
