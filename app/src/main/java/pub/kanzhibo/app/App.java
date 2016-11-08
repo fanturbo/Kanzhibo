@@ -12,10 +12,6 @@ import pub.kanzhibo.app.util.SharedPreferencesUtils;
 
 import static pub.kanzhibo.app.gloabal.Constants.Key.ISLOGIN;
 
-
-/**
- * 微社区Demo的Application，如果需要自行处理友盟消息推送过来的信息，那么需要在Application中进行设置。
- */
 public class App extends Application {
 
     public static Context context;
