@@ -66,12 +66,22 @@ public class DialogHelp {
         builder.setNegativeButton("取消", null);
         return builder;
     }
-
     public static AlertDialog.Builder getConfirmDialog(Context context, String confirmText, String message, DialogInterface.OnClickListener onClickListener) {
         AlertDialog.Builder builder = getDialog(context);
         builder.setMessage(Html.fromHtml(message));
         builder.setPositiveButton(confirmText, onClickListener);
         builder.setNegativeButton("取消", null);
+        return builder;
+    }
+
+    public static AlertDialog.Builder getConfirmDialog(Context context, String message, DialogInterface.OnClickListener onOkClickListener, DialogInterface.OnClickListener onCancleClickListener) {
+        AlertDialog.Builder builder = getDialog(context);
+        builder.setMessage(message);
+        if ("您有未发送的帖子".equals(message)) {
+            builder.setPositiveButton("查看", onOkClickListener);
+        } else
+            builder.setPositiveButton("确定", onOkClickListener);
+        builder.setNegativeButton("取消", onCancleClickListener);
         return builder;
     }
 
@@ -95,7 +105,6 @@ public class DialogHelp {
         if (!TextUtils.isEmpty(title)) {
             builder.setTitle(title);
         }
-        builder.setPositiveButton("确定", onClickListener);
         builder.setNegativeButton("取消", null);
         return builder;
     }
@@ -103,7 +112,6 @@ public class DialogHelp {
     public static AlertDialog.Builder getSingleChoiceDialog(Context context, String[] arrays, int selectIndex, DialogInterface.OnClickListener onClickListener) {
         return getSingleChoiceDialog(context, "", arrays, selectIndex, onClickListener);
     }
-
     public static void getSelectSaveDataDialog(final Context context, boolean alwaysShow, int index, DialogInterface.OnClickListener onClickListener) {
         if (!SharedPreferencesUtils.getBoolean(context, SELECT_SAVE_WHERE, false) || alwaysShow) {
             String[] strings = {"只保存到本地", "保存到服务器"};

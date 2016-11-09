@@ -7,7 +7,9 @@ import com.avos.avoscloud.AVRelation;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.SaveCallback;
+import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -24,9 +26,12 @@ import pub.kanzhibo.app.global.Constants;
 import pub.kanzhibo.app.model.DouyuBigData;
 import pub.kanzhibo.app.model.PlatForm;
 import pub.kanzhibo.app.model.roominfo.DouYuUserInfo;
+import pub.kanzhibo.app.model.roominfo.HuyaOffUserInfo;
+import pub.kanzhibo.app.model.roominfo.HuyaUserInfo;
 import pub.kanzhibo.app.model.roominfo.PandaUserInfo;
 import pub.kanzhibo.app.model.roominfo.ZhanqiUserInfo;
 import pub.kanzhibo.app.model.searchliveuser.LiveUser;
+import pub.kanzhibo.app.model.searchliveuser.UserHuyaPlay;
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Action1;
@@ -45,9 +50,11 @@ public class LivePresent extends BaseRxLcePresenter<LiveView, List<LiveUser>> {
         followUser.saveInBackground(new SaveCallback() {
             @Override
             public void done(AVException e) {
-                AVRelation<AVObject> relation = AVUser.getCurrentUser().getRelation("followLiveUser");// 新建一个 AVRelation
-                relation.add(followUser);
-                AVUser.getCurrentUser().saveInBackground();
+                if (e == null) {
+                    AVRelation<AVObject> relation = AVUser.getCurrentUser().getRelation("followLiveUser");// 新建一个 AVRelation
+                    relation.add(followUser);
+                    AVUser.getCurrentUser().saveInBackground();
+                }
             }
         });
     }
@@ -73,7 +80,7 @@ public class LivePresent extends BaseRxLcePresenter<LiveView, List<LiveUser>> {
                                 .flatMap(new Func1<AVObject, Observable<LiveUser>>() {
                                     @Override
                                     public Observable<LiveUser> call(AVObject avObject) {
-                                        String uid = (String) avObject.get("uid");
+                                        final String uid = (String) avObject.get("uid");
                                         int platForm = avObject.getInt("platform");
                                         switch (platForm) {
                                             case 1:
@@ -97,9 +104,60 @@ public class LivePresent extends BaseRxLcePresenter<LiveView, List<LiveUser>> {
                                                             }
                                                         });
                                             case 2:
-//                                                return ApiClient.getInstance()
-//                                                        .getLiveApi(Constants.HUYA_BASE_URL);
-                                                break;
+                                                //虎牙的数据有点特殊，先根据getHuyaRoomInfo_1获取房间信息，如果未直播的话info为null，这时候需要根据getHuyaRoomInfo_2来获取房间的信息
+                                                return ApiClient.getInstance()
+                                                        .getLiveApi(Constants.HUYA_ROOM_BASE_URL_1)
+                                                        .getHuyaRoomInfo_1(uid)
+                                                        .flatMap(new Func1<ResponseBody, Observable<LiveUser>>() {
+                                                            @Override
+                                                            public Observable<LiveUser> call(ResponseBody responseBody) {
+                                                                String responseJsonStr = null;
+                                                                try {
+                                                                    responseJsonStr = new String(responseBody.bytes());
+                                                                    JSONObject jsonObject = new JSONObject(responseJsonStr);
+                                                                    if (jsonObject.optJSONObject("info") != null) {
+                                                                        Gson gson = new Gson();
+                                                                        HuyaUserInfo huyaUserInfo = gson.fromJson(responseJsonStr.toString(), HuyaUserInfo.class);
+                                                                        HuyaUserInfo.InfoEntity entity = huyaUserInfo.getInfo();
+                                                                        LiveUser liveUser = new LiveUser();
+                                                                        liveUser.setUserName(entity.getLiveNick());
+                                                                        liveUser.setUid(entity.getLiveUid() + "");
+                                                                        liveUser.setPlatform(PlatForm.HUYA);
+                                                                        liveUser.setHasFocus(true);
+                                                                        liveUser.setRoomTitle(entity.getLiveName());
+                                                                        liveUser.setUserIconUrl(entity.getLivePortait());
+                                                                        liveUser.setViewersCount("观看人数:" + entity.getUsers() + "");
+                                                                        liveUser.setStatus("在直播");
+                                                                        return Observable.just(liveUser);
+                                                                    } else {
+                                                                        return ApiClient.getInstance()
+                                                                                .getLiveApi(Constants.HUYA_ROOM_BASE_URL_2)
+                                                                                .getHuyaRoomInfo_2(uid)
+                                                                                .map(new Func1<HuyaOffUserInfo, LiveUser>() {
+                                                                                    @Override
+                                                                                    public LiveUser call(HuyaOffUserInfo huyaOffUserInfo) {
+                                                                                        LiveUser liveUser = new LiveUser();
+                                                                                        HuyaOffUserInfo.DataEntity entity = huyaOffUserInfo.getData();
+                                                                                        liveUser.setUserName(entity.getName());
+                                                                                        liveUser.setUid(entity.getUid() + "");
+                                                                                        liveUser.setPlatform(PlatForm.HUYA);
+                                                                                        liveUser.setHasFocus(true);
+                                                                                        liveUser.setRoomTitle("不知道主播将要播啥");
+                                                                                        liveUser.setUserIconUrl(entity.getAvatar());
+                                                                                        liveUser.setViewersCount("关注人数:" + entity.getFans() + "");
+                                                                                        liveUser.setStatus("未开播");
+                                                                                        return liveUser;
+                                                                                    }
+                                                                                });
+                                                                    }
+                                                                } catch (IOException e1) {
+                                                                    e1.printStackTrace();
+                                                                } catch (JSONException e1) {
+                                                                    e1.printStackTrace();
+                                                                }
+                                                                return null;
+                                                            }
+                                                        });
                                             case 3:
                                                 return ApiClient.getInstance()
                                                         .getLiveApi(Constants.ZHANQI_BASE_URL)
@@ -217,7 +275,6 @@ public class LivePresent extends BaseRxLcePresenter<LiveView, List<LiveUser>> {
                     .compose(RxSchedulers.<List<LiveUser>>applySchedulers())
                     .subscribe(getSubscriber());
         }
-
     }
 
     public Subscriber<List<LiveUser>> getSubscriber() {

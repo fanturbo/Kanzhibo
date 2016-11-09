@@ -106,6 +106,9 @@ public class LiveUserFragment extends BaseLceFragment<SwipeRefreshLoadMoreLayout
 
     @Override
     protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
+        if (e == null) {
+            return "哦，天哪，加载数据出错了！";
+        }
         return "抱歉,没有找到相关主播";
     }
 

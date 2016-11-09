@@ -4,6 +4,8 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import pub.kanzhibo.app.model.DouyuBigData;
 import pub.kanzhibo.app.model.roominfo.DouYuUserInfo;
+import pub.kanzhibo.app.model.roominfo.HuyaOffUserInfo;
+import pub.kanzhibo.app.model.roominfo.HuyaUserInfo;
 import pub.kanzhibo.app.model.roominfo.PandaUserInfo;
 import pub.kanzhibo.app.model.roominfo.ZhanqiUserInfo;
 import pub.kanzhibo.app.model.searchliveuser.LiveUserDouYu;
@@ -113,11 +115,27 @@ public interface ILiveApi {
     Observable<ZhanqiUserInfo> getZhanqiRoomInfo(@Path("roomid") String roomid);
 
     /**
-     * 获取战旗tv直播房间信息
+     * 获取战旗tv热门列表数据
      *
      * @return
      */
     @GET("/api/v1/getbigDataRoom")
     Observable<DouyuBigData> getBigData();
+
+    /**
+     * 获取虎牙直播房间信息
+     *
+     * @return
+     */
+    @GET("/api/liveinfo?gameId=")
+    Observable<ResponseBody> getHuyaRoomInfo_1(@Query("uid") String uid);
+
+    /**
+     * 获取虎牙直播房间信息
+     *
+     * @return
+     */
+    @GET("hosts/{uid}?token=null")
+    Observable<HuyaOffUserInfo> getHuyaRoomInfo_2(@Path("uid") String uid);
 
 }

@@ -10,6 +10,8 @@ public interface Constants {
     String QUANMIN_BASE_URL = "http://www.quanmin.tv/";
     String ZHANQI_BASE_URL = "http://www.zhanqi.tv/";
     String PANDA_BASE_URL = "http://api.m.panda.tv/";
+    String HUYA_ROOM_BASE_URL_1 = "http://phone.huya.com/";
+    String HUYA_ROOM_BASE_URL_2 = "http://m.fans.huya.com/";
 
     public interface Key {
         String WEB_URL = "web_url";

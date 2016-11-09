@@ -23,6 +23,10 @@ public class App extends Application {
         AVOSCloud.initialize(this, "CIVyV1zRVPbkMQC88fyO9cuW-gzGzoHsz", "Tqbvbhznm5vc1BYdzMTXHeVd");
     }
 
+    public static Context getContext() {
+        return context;
+    }
+
     public static boolean isLogIn() {
         return SharedPreferencesUtils.getBoolean(context, ISLOGIN, false);
     }
