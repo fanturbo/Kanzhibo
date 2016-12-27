@@ -3,6 +3,8 @@ package pub.kanzhibo.app.api;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import pub.kanzhibo.app.model.DouyuBigData;
+import pub.kanzhibo.app.model.FollowLive;
+import pub.kanzhibo.app.model.UserInfo;
 import pub.kanzhibo.app.model.roominfo.DouYuUserInfo;
 import pub.kanzhibo.app.model.roominfo.HuyaOffUserInfo;
 import pub.kanzhibo.app.model.roominfo.HuyaUserInfo;
@@ -138,4 +140,22 @@ public interface ILiveApi {
     @GET("hosts/{uid}?token=null")
     Observable<HuyaOffUserInfo> getHuyaRoomInfo_2(@Path("uid") String uid);
 
+    /**
+     * 斗鱼登录
+     *
+     * @param username
+     * @param password
+     * @return
+     */
+    @GET("/api/v1/login")
+    Observable<UserInfo> login(@Query("username") String username, @Query("password") String password);
+
+    /**
+     * 获取斗鱼关注的主播
+     *
+     * @param token
+     * @return
+     */
+    @GET("/api/v1/remind_list")
+    Observable<FollowLive> getFollow(@Query("token") String token, @Query("limit") String limit, @Query("offset") String offset);
 }

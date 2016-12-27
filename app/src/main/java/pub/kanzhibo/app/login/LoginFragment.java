@@ -2,7 +2,10 @@ package pub.kanzhibo.app.login;
 
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,11 +21,14 @@ import butterknife.OnClick;
 import pub.kanzhibo.app.App;
 import pub.kanzhibo.app.R;
 import pub.kanzhibo.app.base.BaseFragment;
+import pub.kanzhibo.app.common.CommonActivity;
+import pub.kanzhibo.app.model.UserInfo;
 import pub.kanzhibo.app.model.event.LoginEvent;
 import pub.kanzhibo.app.model.event.RegisterEvent;
+import pub.kanzhibo.app.util.SharedPreferencesUtils;
 
 /**
- * A simple {@link Fragment} subclass.
+ * 登录界面
  */
 public class LoginFragment extends BaseFragment<LoginView, LoginPresenter> implements LoginView {
 
@@ -54,13 +60,32 @@ public class LoginFragment extends BaseFragment<LoginView, LoginPresenter> imple
     }
 
     @OnClick(R.id.btn_login)
-    void register() {
+    void login() {
         showLoading();
-        ((LoginPresenter) presenter).login(mUserName.getText().toString().trim(), mPasswordView.getText().toString().trim());
+        Bundle bundle = getArguments();
+        String userName = mUserName.getText().toString().trim();
+        String password = mPasswordView.getText().toString().trim();
+        if (bundle != null) {
+            String from = bundle.getString("from");
+            if ("douyu".equals(from)) {
+                if(userName.isEmpty() || password.isEmpty()){
+                    tvError.setText("亲,输入帐号和密码啊!");
+                    mProgressDialog.dismiss();
+                    return;
+                }
+                ((LoginPresenter) presenter).loginDouYu(userName, password);
+                mRegisterButton.setVisibility(View.GONE);
+            } else {
+                ((LoginPresenter) presenter).login(userName, password);
+            }
+        } else {
+            ((LoginPresenter) presenter).login(userName, password);
+        }
+
     }
 
     @OnClick(R.id.btn_register)
-    void login() {
+    void register() {
         RxBus.get().post(new RegisterEvent(false));
     }
 
@@ -87,5 +112,14 @@ public class LoginFragment extends BaseFragment<LoginView, LoginPresenter> imple
         App.logIn();
         RxBus.get().post(new LoginEvent(user));
         getActivity().finish();
+    }
+
+    @Override
+    public void loginSuccessful(UserInfo userInfo) {
+        mProgressDialog.dismiss();
+        SharedPreferencesUtils.saveToken(getActivity(), userInfo.getData().getToken());
+        Intent intent = new Intent(getActivity(), CommonActivity.class);
+        intent.putExtra("Fragment", "FollowFragment");
+        startActivity(intent);
     }
 }

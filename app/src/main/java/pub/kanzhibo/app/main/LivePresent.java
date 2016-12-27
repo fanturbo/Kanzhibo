@@ -295,6 +295,7 @@ public class LivePresent extends BaseRxLcePresenter<LiveView, List<LiveUser>> {
                     if (liveUsers.size() == 0) {
                         getView().showError(null, false);
                     } else {
+                        //// TODO: 16/12/26 是否可以去掉中间一句
                         getView().setData(liveUsers);
                         getView().showContent();
                         getView().stopRefresh();

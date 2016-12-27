@@ -63,6 +63,12 @@ public class LiveUserFragment extends BaseLceFragment<SwipeRefreshLoadMoreLayout
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         RxBus.get().register(this);
         AnimationDrawable frameAnim = (AnimationDrawable) getResources().getDrawable(R.drawable.empty_bike);
+        contentView.setPtrHandler(new PtrDefaultHandler() {
+            @Override
+            public void onRefreshBegin(PtrFrameLayout ptrFrameLayout) {
+                loadData(true);
+            }
+        });
         emptyTipsIv.setBackgroundDrawable(frameAnim);
         ((Animatable) emptyTipsIv.getBackground()).start();
         loadData(true);
@@ -126,12 +132,6 @@ public class LiveUserFragment extends BaseLceFragment<SwipeRefreshLoadMoreLayout
     public void showContent() {
         super.showContent();
         stopRefresh();
-        contentView.setPtrHandler(new PtrDefaultHandler() {
-            @Override
-            public void onRefreshBegin(PtrFrameLayout ptrFrameLayout) {
-                loadData(true);
-            }
-        });
     }
 
     @Override

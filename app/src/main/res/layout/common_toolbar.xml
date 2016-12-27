@@ -5,10 +5,10 @@
     android:id="@+id/toolBar"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
+    android:background="?attr/colorPrimary"
     android:elevation="8px"
     android:orientation="vertical"
     app:contentInsetStartWithNavigation="0dp"
-    android:background="?attr/colorPrimary"
     app:popupTheme="@style/AppTheme.PopupOverlay"
     app:title="@string/app_name"
     tools:targetApi="lollipop">
@@ -41,11 +41,22 @@
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:textSize="44px"
                 android:layout_marginLeft="20px"
+                android:gravity="center_vertical"
+                android:text="关于"
                 android:textColor="@color/white"
-                android:text="关于" />
+                android:textSize="44px" />
         </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_option"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="导入"
+            android:visibility="gone"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:src="@mipmap/ic_launcher" />
     </RelativeLayout>
 </LinearLayout>

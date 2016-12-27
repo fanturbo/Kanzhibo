@@ -181,6 +181,17 @@ public class MainActivity extends BaseActivity
             intent.putExtra(Constants.Key.WEB_TITLE, "关于");
             intent.putExtra(Constants.Key.WEB_URL, "https://github.com/xturbofan");
             startActivity(intent);
+        } else if (id == R.id.nav_douyu_login) {
+            String token = SharedPreferencesUtils.getToken(this);
+            if(token.isEmpty()) {
+                Intent intent = new Intent(this, CommonActivity.class);
+                intent.putExtra("Fragment", "douyuLogin");
+                startActivityForResult(intent, LOGIN_REQUEST_CODE);
+            }else{
+                Intent intent = new Intent(this, CommonActivity.class);
+                intent.putExtra("Fragment", "FollowFragment");
+                startActivity(intent);
+            }
         } else if (id == R.id.nav_setting) {
             TastyToast.makeText(this, "未完成此功能", 0, 3);
         }
