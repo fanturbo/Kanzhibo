@@ -66,7 +66,8 @@ public class SharedPreferencesUtils {
     }
 
     /**
-     * 保存斗鱼用户名
+     * 保存用户名
+     *
      * @param context
      * @param value
      */
@@ -79,15 +80,30 @@ public class SharedPreferencesUtils {
     }
 
     /**
-     * 保存斗鱼登录密码
+     * 保存斗鱼用户名
+     *
      * @param context
      * @param value
      */
-    public static void savePassword(Context context, String value) {
+    public static void saveDouyuUserName(Context context, String value) {
+        saveString(context, "douyuusername", value);
+    }
+
+    public static String getDouyuUserName(Context context) {
+        return getString(context, "douyuusername", null);
+    }
+
+    /**
+     * 保存斗鱼登录密码
+     *
+     * @param context
+     * @param value
+     */
+    public static void saveDouyuPassword(Context context, String value) {
         saveString(context, "douyupassword", value);
     }
 
-    public static String getPassword(Context context) {
+    public static String getDouyuPassword(Context context) {
         return getString(context, "douyupassword", null);
     }
 

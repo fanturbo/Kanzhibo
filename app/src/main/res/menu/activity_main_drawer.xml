@@ -24,6 +24,10 @@
             android:icon="@drawable/ic_menu_slideshow"
             android:title="登录斗鱼" />
         <item
+            android:id="@+id/nav_douyu_follow"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="斗鱼关注" />
+        <item
             android:id="@+id/nav_setting"
             android:icon="@drawable/ic_menu_manage"
             android:title="app设置" />

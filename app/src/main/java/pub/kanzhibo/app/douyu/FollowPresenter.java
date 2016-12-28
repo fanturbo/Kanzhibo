@@ -77,7 +77,7 @@ public class FollowPresenter extends MvpBasePresenter<FollowView> {
                             //// TODO: 2016/12/20 有待改进
                             Log.i("======", "重新登录");
                             //重新登录
-                            ApiClient.getInstance().getLiveApi(Constants.DOUYU_BASE_URL).login(SharedPreferencesUtils.getUserName(App.getContext()), SharedPreferencesUtils.getPassword(App.getContext()))
+                            ApiClient.getInstance().getLiveApi(Constants.DOUYU_BASE_URL).login(SharedPreferencesUtils.getDouyuUserName(App.getContext()), SharedPreferencesUtils.getDouyuPassword(App.getContext()))
                                     .compose(RxSchedulers.<UserInfo>applySchedulers())
                                     .subscribe(new Action1<UserInfo>() {
                                         @Override

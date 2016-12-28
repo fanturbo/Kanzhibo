@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.feedback.Comment;
 import com.avos.avoscloud.feedback.FeedbackAgent;
 import com.avos.avoscloud.feedback.FeedbackThread;
@@ -38,11 +39,14 @@ import butterknife.ButterKnife;
 import pub.kanzhibo.app.common.CommonActivity;
 import pub.kanzhibo.app.common.WebViewActivity;
 import pub.kanzhibo.app.global.Constants;
+import pub.kanzhibo.app.model.event.DouyuLoginEvent;
 import pub.kanzhibo.app.model.event.LoginEvent;
 import pub.kanzhibo.app.search.SearchActivity;
 import pub.kanzhibo.app.util.DialogHelp;
 import pub.kanzhibo.app.util.SharedPreferencesUtils;
+import pub.kanzhibo.app.util.StringUtils;
 
+import static pub.kanzhibo.app.global.Constants.IMG_URl;
 import static pub.kanzhibo.app.global.Constants.Key.LOGIN_REQUEST_CODE;
 import static pub.kanzhibo.app.global.Constants.Key.SAVE_WHERE;
 import static pub.kanzhibo.app.global.Constants.Key.SELECT_SAVE_WHERE;
@@ -64,6 +68,7 @@ public class MainActivity extends BaseActivity
     ImageView mUserIconIV;
     FeedbackAgent mAgent;
     private MenuItem mLoginMenuItem;
+    private MenuItem mDouyuLoginMenuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +97,7 @@ public class MainActivity extends BaseActivity
     }
 
     private void initView() {
+
         mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,9 +111,21 @@ public class MainActivity extends BaseActivity
         mDrawerLayout.setDrawerListener(toggle);
         toggle.syncState();
         mNavigationView.setNavigationItemSelectedListener(this);
+        View headerView = mNavigationView.getHeaderView(0);
+        Menu menu = mNavigationView.getMenu();
+        mLoginMenuItem = menu.getItem(0);
+        mDouyuLoginMenuItem = menu.getItem(4);
+        mUserIconIV = (ImageView) headerView.findViewById(R.id.iv_userIcon);
+        mUsernameTV = (TextView) headerView.findViewById(R.id.tv_username);
+        if (App.isLogIn()) {
+            mLoginMenuItem.setTitle("退出登录");
+            Glide.with(this).load(IMG_URl).into(mUserIconIV);
+            mUsernameTV.setText(AVUser.getCurrentUser().getUsername());
+        }
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frame_main_content, new LiveUserFragment());
         fragmentTransaction.commit();
+
     }
 
     @Override
@@ -144,7 +162,6 @@ public class MainActivity extends BaseActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         if (id == R.id.nav_login) {
-            mLoginMenuItem = item;
             if (!App.isLogIn()) {
                 Intent intent = new Intent(this, CommonActivity.class);
                 intent.putExtra("Fragment", "login");
@@ -183,11 +200,20 @@ public class MainActivity extends BaseActivity
             startActivity(intent);
         } else if (id == R.id.nav_douyu_login) {
             String token = SharedPreferencesUtils.getToken(this);
-            if(token.isEmpty()) {
+            if (StringUtils.isEmpty(token)) {
                 Intent intent = new Intent(this, CommonActivity.class);
                 intent.putExtra("Fragment", "douyuLogin");
                 startActivityForResult(intent, LOGIN_REQUEST_CODE);
-            }else{
+            } else {
+                SharedPreferencesUtils.saveToken(this, "");
+            }
+        } else if (id == R.id.nav_douyu_follow) {
+            String token = SharedPreferencesUtils.getToken(this);
+            if (StringUtils.isEmpty(token)) {
+                Intent intent = new Intent(this, CommonActivity.class);
+                intent.putExtra("Fragment", "douyuLogin");
+                startActivityForResult(intent, LOGIN_REQUEST_CODE);
+            } else {
                 Intent intent = new Intent(this, CommonActivity.class);
                 intent.putExtra("Fragment", "FollowFragment");
                 startActivity(intent);
@@ -195,8 +221,6 @@ public class MainActivity extends BaseActivity
         } else if (id == R.id.nav_setting) {
             TastyToast.makeText(this, "未完成此功能", 0, 3);
         }
-        mUserIconIV = (ImageView) mNavigationView.findViewById(R.id.iv_userIcon);
-        mUsernameTV = (TextView) mNavigationView.findViewById(R.id.tv_username);
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -205,12 +229,21 @@ public class MainActivity extends BaseActivity
     public void showUserInfo(LoginEvent loginEvent) {
         if (loginEvent.getUser() != null) {
             mLoginMenuItem.setTitle("退出登录");
-            Glide.with(this).load("https://unsplash.it/200/200/?random").into(mUserIconIV);
+            Glide.with(this).load(IMG_URl).into(mUserIconIV);
             mUsernameTV.setText(loginEvent.getUser().getUsername() + "");
         } else {
             mLoginMenuItem.setTitle("登录");
             mUserIconIV.setImageResource(R.mipmap.ic_launcher);
             mUsernameTV.setText("未登录");
+        }
+    }
+
+    @Subscribe
+    public void showUserInfo(DouyuLoginEvent loginEvent) {
+        if (loginEvent.getUserInfo() != null) {
+            mDouyuLoginMenuItem.setTitle("退出登录");
+        } else {
+            mDouyuLoginMenuItem.setTitle("登录斗鱼");
         }
     }
 

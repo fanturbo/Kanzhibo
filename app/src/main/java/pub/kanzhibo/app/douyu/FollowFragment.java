@@ -3,8 +3,6 @@ package pub.kanzhibo.app.douyu;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
@@ -17,27 +15,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
+import io.realm.Realm;
 import pub.kanzhibo.app.R;
-import pub.kanzhibo.app.base.BaseFragment;
 import pub.kanzhibo.app.base.BaseLceFragment;
 import pub.kanzhibo.app.common.widget.SwipeRefreshLoadMoreLayout;
 import pub.kanzhibo.app.model.FollowLive;
-import pub.kanzhibo.app.model.UserInfo;
+import pub.kanzhibo.app.model.event.DouyuFollowLiveData;
 import pub.kanzhibo.app.util.SharedPreferencesUtils;
 
 /**
  * 斗鱼关注的直播页面
  */
-public class FollowFragment extends BaseLceFragment<SwipeRefreshLoadMoreLayout, List<FollowLive.DataBean>, FollowView, FollowPresenter> implements FollowView {
+public class FollowFragment extends BaseLceFragment<SwipeRefreshLoadMoreLayout, List<DouyuFollowLiveData>, FollowView, FollowPresenter> implements FollowView {
 
 
     @BindView(R.id.recyclerview_follow)
     RecyclerView recyclerviewFollow;
     private FollowUserAdapter mFollowUserAdapter;
-    private List<FollowLive.DataBean> mFollowUserList;
+    private List<DouyuFollowLiveData> mFollowUserList;
+    private Realm mRealm;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -49,6 +47,7 @@ public class FollowFragment extends BaseLceFragment<SwipeRefreshLoadMoreLayout, 
                 loadData(true);
             }
         });
+        mRealm = Realm.getDefaultInstance();
         RxBus.get().register(this);
         loadData(true);
     }
@@ -95,7 +94,7 @@ public class FollowFragment extends BaseLceFragment<SwipeRefreshLoadMoreLayout, 
     }
 
     @Override
-    public void setData(List<FollowLive.DataBean> data) {
+    public void setData(List<DouyuFollowLiveData> data) {
         if (mFollowUserAdapter == null) {
             mFollowUserList = new ArrayList<>();
             mFollowUserList.addAll(data);
@@ -106,6 +105,9 @@ public class FollowFragment extends BaseLceFragment<SwipeRefreshLoadMoreLayout, 
         }
         mFollowUserAdapter.notifyDataSetChanged();
         showContent();
+        mRealm.beginTransaction();
+        List<DouyuFollowLiveData> dataBeanList = mRealm.copyToRealmOrUpdate(data);
+        mRealm.commitTransaction();
     }
 
     @Override

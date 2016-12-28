@@ -3,6 +3,8 @@ package pub.kanzhibo.app.model.event;
 import com.avos.avoscloud.AVUser;
 import com.hwangjr.rxbus.annotation.Produce;
 
+import pub.kanzhibo.app.model.UserInfo;
+
 /**
  * Created by turbo on 2016/10/31.
  */

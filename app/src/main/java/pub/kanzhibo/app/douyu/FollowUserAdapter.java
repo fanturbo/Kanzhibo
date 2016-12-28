@@ -13,19 +13,20 @@ import java.util.List;
 
 import pub.kanzhibo.app.R;
 import pub.kanzhibo.app.model.FollowLive;
+import pub.kanzhibo.app.model.event.DouyuFollowLiveData;
 
 
 /**
  * Created by turbo on 2016/12/26.
  */
 
-public class FollowUserAdapter extends BaseQuickAdapter<FollowLive.DataBean, BaseViewHolder> {
-    public FollowUserAdapter(int layoutResId, List<FollowLive.DataBean> data) {
+public class FollowUserAdapter extends BaseQuickAdapter<DouyuFollowLiveData, BaseViewHolder> {
+    public FollowUserAdapter(int layoutResId, List<DouyuFollowLiveData> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder baseViewHolder, FollowLive.DataBean dataBean) {
+    protected void convert(BaseViewHolder baseViewHolder, DouyuFollowLiveData dataBean) {
         baseViewHolder.setText(R.id.tv_nickname, dataBean.getNickname())
                 .setText(R.id.tv_roomname, dataBean.getName());
         final FrameLayout frameRoomSrc = (FrameLayout) baseViewHolder.getConvertView().findViewById(R.id.frame_room_src);

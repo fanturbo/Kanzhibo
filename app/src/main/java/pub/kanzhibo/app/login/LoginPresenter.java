@@ -5,10 +5,12 @@ import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.LogInCallback;
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 
+import pub.kanzhibo.app.App;
 import pub.kanzhibo.app.api.ApiClient;
 import pub.kanzhibo.app.api.RxSchedulers;
 import pub.kanzhibo.app.global.Constants;
 import pub.kanzhibo.app.model.UserInfo;
+import pub.kanzhibo.app.util.SharedPreferencesUtils;
 import rx.functions.Action1;
 
 /**
@@ -30,12 +32,14 @@ public class LoginPresenter extends MvpBasePresenter<LoginView> {
         });
     }
 
-    public void loginDouYu(String email, String password) {
+    public void loginDouYu(final String email, final String password) {
         ApiClient.getInstance().getLiveApi(Constants.DOUYU_BASE_URL).login(email, password)
                 .compose(RxSchedulers.<UserInfo>applySchedulers())
                 .subscribe(new Action1<UserInfo>() {
                     @Override
                     public void call(UserInfo userInfo) {
+                        SharedPreferencesUtils.saveDouyuUserName(App.getContext(), email);
+                        SharedPreferencesUtils.saveDouyuPassword(App.getContext(), password);
                         getView().loginSuccessful(userInfo);
                     }
                 }, new Action1<Throwable>() {

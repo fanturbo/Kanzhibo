@@ -7,6 +7,8 @@ import com.avos.avoscloud.AVOSCloud;
 
 import com.tencent.bugly.crashreport.CrashReport;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import pub.kanzhibo.app.util.SharedPreferencesUtils;
 
 import static pub.kanzhibo.app.global.Constants.Key.ISLOGIN;
@@ -21,6 +23,9 @@ public class App extends Application {
         context = this;
         CrashReport.initCrashReport(getApplicationContext(), "900057711", false);
         AVOSCloud.initialize(this, "CIVyV1zRVPbkMQC88fyO9cuW-gzGzoHsz", "Tqbvbhznm5vc1BYdzMTXHeVd");
+//        Realm.init(this);
+        RealmConfiguration config = new RealmConfiguration.Builder(this).schemaVersion(1).build();
+        Realm.setDefaultConfiguration(config);
     }
 
     public static Context getContext() {

@@ -23,9 +23,11 @@ import pub.kanzhibo.app.R;
 import pub.kanzhibo.app.base.BaseFragment;
 import pub.kanzhibo.app.common.CommonActivity;
 import pub.kanzhibo.app.model.UserInfo;
+import pub.kanzhibo.app.model.event.DouyuLoginEvent;
 import pub.kanzhibo.app.model.event.LoginEvent;
 import pub.kanzhibo.app.model.event.RegisterEvent;
 import pub.kanzhibo.app.util.SharedPreferencesUtils;
+import pub.kanzhibo.app.util.StringUtils;
 
 /**
  * 登录界面
@@ -68,7 +70,7 @@ public class LoginFragment extends BaseFragment<LoginView, LoginPresenter> imple
         if (bundle != null) {
             String from = bundle.getString("from");
             if ("douyu".equals(from)) {
-                if(userName.isEmpty() || password.isEmpty()){
+                if(StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)){
                     tvError.setText("亲,输入帐号和密码啊!");
                     mProgressDialog.dismiss();
                     return;
@@ -117,6 +119,7 @@ public class LoginFragment extends BaseFragment<LoginView, LoginPresenter> imple
     @Override
     public void loginSuccessful(UserInfo userInfo) {
         mProgressDialog.dismiss();
+        RxBus.get().post(new DouyuLoginEvent(userInfo));
         SharedPreferencesUtils.saveToken(getActivity(), userInfo.getData().getToken());
         Intent intent = new Intent(getActivity(), CommonActivity.class);
         intent.putExtra("Fragment", "FollowFragment");

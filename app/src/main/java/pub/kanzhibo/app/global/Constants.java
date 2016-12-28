@@ -12,6 +12,7 @@ public interface Constants {
     String PANDA_BASE_URL = "http://api.m.panda.tv/";
     String HUYA_ROOM_BASE_URL_1 = "http://phone.huya.com/";
     String HUYA_ROOM_BASE_URL_2 = "http://m.fans.huya.com/";
+    String IMG_URl = "http://aigestudio.com/wp-content/uploads/2016/08/logo.png";
 
     public interface Key {
         String WEB_URL = "web_url";
