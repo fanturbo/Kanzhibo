@@ -2,7 +2,6 @@ package pub.kanzhibo.app.model;
 
 import java.util.List;
 
-import io.realm.RealmObject;
 import pub.kanzhibo.app.model.event.DouyuFollowLiveData;
 
 /**

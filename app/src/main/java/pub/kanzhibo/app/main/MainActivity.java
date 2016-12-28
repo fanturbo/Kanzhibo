@@ -122,6 +122,11 @@ public class MainActivity extends BaseActivity
             Glide.with(this).load(IMG_URl).into(mUserIconIV);
             mUsernameTV.setText(AVUser.getCurrentUser().getUsername());
         }
+        if(StringUtils.isEmpty(SharedPreferencesUtils.getToken(this))){
+            mDouyuLoginMenuItem.setTitle("登录斗鱼");
+        }else{
+            mDouyuLoginMenuItem.setTitle("退出斗鱼帐号");
+        }
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frame_main_content, new LiveUserFragment());
         fragmentTransaction.commit();

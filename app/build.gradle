@@ -14,7 +14,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             //设置支持的cpu
-            abiFilters 'armeabi' //,'armeabi-v7a'//, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+            abiFilters 'armeabi' ,'armeabi-v7a'//, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
         }
     }
 
@@ -42,14 +42,6 @@ android {
     }
     lintOptions {
         abortOnError false
-    }
-    splits {
-        abi {
-            enable true
-            reset()
-            include 'armeabi'
-            universalApk false
-        }
     }
 }
 
@@ -79,8 +71,8 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:24.2.1'
     compile 'com.android.support:cardview-v7:24.2.1'
     compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.tencent.bugly:crashreport:latest.release'
-    compile 'com.tencent.bugly:nativecrashreport:latest.release'
+//    compile 'com.tencent.bugly:crashreport:latest.release'
+//    compile 'com.tencent.bugly:nativecrashreport:latest.release'
     compile 'com.hwangjr.rxbus:rxbus:1.0.4'
     compile 'com.jakewharton:butterknife:8.4.0'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
