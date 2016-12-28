@@ -12,8 +12,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import java.util.List;
 
 import pub.kanzhibo.app.R;
-import pub.kanzhibo.app.model.FollowLive;
-import pub.kanzhibo.app.model.event.DouyuFollowLiveData;
+import pub.kanzhibo.app.model.DouyuFollowLiveData;
 
 
 /**

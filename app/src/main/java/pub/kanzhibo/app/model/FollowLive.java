@@ -2,8 +2,6 @@ package pub.kanzhibo.app.model;
 
 import java.util.List;
 
-import pub.kanzhibo.app.model.event.DouyuFollowLiveData;
-
 /**
  * Created by snail on 16/12/19.
  */

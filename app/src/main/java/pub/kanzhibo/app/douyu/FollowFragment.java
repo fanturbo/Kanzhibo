@@ -21,8 +21,7 @@ import io.realm.Realm;
 import pub.kanzhibo.app.R;
 import pub.kanzhibo.app.base.BaseLceFragment;
 import pub.kanzhibo.app.common.widget.SwipeRefreshLoadMoreLayout;
-import pub.kanzhibo.app.model.FollowLive;
-import pub.kanzhibo.app.model.event.DouyuFollowLiveData;
+import pub.kanzhibo.app.model.DouyuFollowLiveData;
 import pub.kanzhibo.app.util.SharedPreferencesUtils;
 
 /**

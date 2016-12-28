@@ -6,13 +6,10 @@ import android.support.v4.app.Fragment;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
-import com.avos.avoscloud.AVRelation;
-import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.SaveCallback;
 import com.hwangjr.rxbus.RxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
@@ -27,11 +24,10 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 import pub.kanzhibo.app.R;
 import pub.kanzhibo.app.base.BaseActivity;
-import pub.kanzhibo.app.base.BaseFragment;
 import pub.kanzhibo.app.douyu.FollowFragment;
 import pub.kanzhibo.app.login.LoginFragment;
 import pub.kanzhibo.app.model.PlatForm;
-import pub.kanzhibo.app.model.event.DouyuFollowLiveData;
+import pub.kanzhibo.app.model.DouyuFollowLiveData;
 import pub.kanzhibo.app.model.event.RegisterEvent;
 import pub.kanzhibo.app.register.RegisterFragment;
 

@@ -1,4 +1,4 @@
-package pub.kanzhibo.app.model.event;
+package pub.kanzhibo.app.model;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
