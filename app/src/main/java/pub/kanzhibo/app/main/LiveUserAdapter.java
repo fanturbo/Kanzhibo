@@ -1,5 +1,9 @@
 package pub.kanzhibo.app.main;
 
+import android.support.annotation.AnimRes;
+import android.support.v7.widget.RecyclerView;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -22,6 +26,7 @@ public class LiveUserAdapter extends BaseQuickAdapter<LiveUser, BaseViewHolder> 
 
     //自定义一个关注的监听事件
     private LiveUserFollowListner liveUserFollowListner;
+    protected int mLastPosition = -1;
 
     public LiveUserFollowListner getLiveUserFollowListner() {
         return liveUserFollowListner;
@@ -52,8 +57,15 @@ public class LiveUserAdapter extends BaseQuickAdapter<LiveUser, BaseViewHolder> 
             }
         });
         Glide.with(mContext).load(liveUser.getUserIconUrl()).crossFade().into((ImageView) viewHolder.getView(R.id.roundimage_roombackgroud));
+        setItemAppearAnimation(viewHolder,viewHolder.getAdapterPosition(), R.anim.anim_bottom_in);
     }
-
+    protected void setItemAppearAnimation(RecyclerView.ViewHolder holder, int position, @AnimRes int type) {
+        if (position > mLastPosition/* && !isFooterPosition(position)*/) {
+            Animation animation = AnimationUtils.loadAnimation(holder.itemView.getContext(), type);
+            holder.itemView.startAnimation(animation);
+            mLastPosition = position;
+        }
+    }
     public interface LiveUserFollowListner {
         public void onFollow(boolean followStatus, LiveUser liveUser);
     }

@@ -13,10 +13,14 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.hwangjr.rxbus.RxBus;
+import com.jakewharton.rxbinding.view.RxView;
+import com.jakewharton.rxbinding.widget.RxCompoundButton;
+import com.jakewharton.rxbinding.widget.RxTextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindArray;
 import butterknife.BindView;
@@ -25,6 +29,7 @@ import pub.kanzhibo.app.R;
 import pub.kanzhibo.app.base.BaseActivity;
 import pub.kanzhibo.app.model.PlatForm;
 import pub.kanzhibo.app.model.event.SearchEvent;
+import rx.functions.Action1;
 
 public class SearchActivity extends BaseActivity {
 
@@ -34,6 +39,8 @@ public class SearchActivity extends BaseActivity {
     TabLayout tabLayout;
     @BindView(R.id.et_search_key)
     EditText searchKeyEditText;
+    @BindView(R.id.ib_search)
+    ImageButton mIbSearch;
     String[] mPlatForms;
 
 
@@ -50,7 +57,7 @@ public class SearchActivity extends BaseActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if(event.getRawX() >= searchKeyEditText.getRight() - searchKeyEditText.getTotalPaddingRight()){
+                    if (event.getRawX() >= searchKeyEditText.getRight() - searchKeyEditText.getTotalPaddingRight()) {
                         searchKeyEditText.setText("");
                         return true;
                     }
@@ -58,16 +65,17 @@ public class SearchActivity extends BaseActivity {
                 return false;
             }
         });
+        RxView.clicks(mIbSearch).throttleFirst(1, TimeUnit.SECONDS).subscribe(new Action1<Void>() {
+            @Override
+            public void call(Void aVoid) {
+                RxBus.get().post(new SearchEvent(searchKeyEditText.getText().toString().trim()));
+            }
+        });
     }
 
     @OnClick(R.id.ib_back)
     void back() {
         this.finish();
-    }
-
-    @OnClick(R.id.ib_search)
-    void search() {
-        RxBus.get().post(new SearchEvent(searchKeyEditText.getText().toString().trim()));
     }
 
     //todo fragment的缓存

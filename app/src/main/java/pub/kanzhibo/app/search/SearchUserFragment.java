@@ -1,15 +1,20 @@
 package pub.kanzhibo.app.search;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.animation.BaseAnimation;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.hwangjr.rxbus.RxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
@@ -72,7 +77,9 @@ public class SearchUserFragment extends BaseLceFragment<SwipeRefreshLoadMoreLayo
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         RxBus.get().register(this);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),
+                LinearLayoutManager.VERTICAL, false));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addOnItemTouchListener(new OnItemClickListener() {
 
             @Override
@@ -104,9 +111,11 @@ public class SearchUserFragment extends BaseLceFragment<SwipeRefreshLoadMoreLayo
             liveUserAdapter = new LiveUserAdapter(mLiveUserList);
             liveUserAdapter.setLiveUserFollowListner(this);
             recyclerView.setAdapter(liveUserAdapter);
+
         } else {
             mLiveUserList.addAll(data);
         }
+        liveUserAdapter.isFirstOnly(false);
         liveUserAdapter.notifyDataSetChanged();
     }
 
